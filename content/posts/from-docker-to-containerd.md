@@ -1,5 +1,4 @@
 +++
-author = "Dan"
 categories = ["kubernetes", "docker", "homelab"]
 date = 2020-12-04T18:45:04Z
 description = ""

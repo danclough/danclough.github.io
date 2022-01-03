@@ -28,6 +28,9 @@ languages:
         logoHomeLink: /
     menu:
       main:
+      - identifier: home
+        name: Home
+        url: /
       - identifier: about
         name: About me
         url: /about

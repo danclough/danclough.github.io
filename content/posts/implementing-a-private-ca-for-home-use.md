@@ -1,5 +1,4 @@
 +++
-author = "Dan"
 date = 2021-10-31T01:29:21Z
 description = ""
 draft = false
