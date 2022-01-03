@@ -1,0 +1,44 @@
+languageCode: "en-us"
+baseUrl: ""
+theme: "terminal"
+paginate: 5
+googleAnalytics: "UA-23906734-2"
+
+params:
+#  author: "Dan Clough"
+  contentTypeName: "posts"
+  themeColor: "blue"
+  showMenuItems: 5
+  fullWidthTheme: false
+  centerTheme: true
+  autoCover: true
+  favicon: "images/favicon.ico"
+
+languages:
+  en:
+    languageName: "English"
+    title: "Buffer Overflow"
+    description: "A blog for my tech experiments and experiences"
+    menuMore: "Show more"
+    readMore: "Read more"
+    readOtherPosts: "Read other posts"
+    params:
+      logo:
+        logoText: Buffer Overflow
+        logoHomeLink: /
+    menu:
+      main:
+      - identifier: about
+        name: About me
+        url: /about
+      - identifier: twitter
+        name: Twitter
+        url: https://twitter.com/dan_clough
+      - identifier: github
+        name: GitHub
+        url: https://github.com/danclough  
+
+#markup:
+#  goldmark:
+#    renderer:
+#      unsafe: true

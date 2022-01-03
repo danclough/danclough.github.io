@@ -1,0 +1,14 @@
+figure.ful {
+    width: 80vw;
+    max-width: 100%;
+    position: relative;
+    left: calc(-40vw + 45%);
+} 
+
+figure.full {
+    margin: 0 auto;
+    max-width: calc(72rem + 24vw) !important;
+    min-width: 100%;
+    width: calc(100vw - 4rem);
+    margin: 0 0 4rem;
+}
