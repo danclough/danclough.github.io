@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>homelab on Buffer Overflow</title><link>/categories/homelab/</link><description>Recent content in homelab on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 04 Dec 2020 18:45:04 +0000</lastBuildDate><atom:link href="/categories/homelab/index.xml" rel="self" type="application/rss+xml"/><item><title>Migrating Kubernetes from Docker to containerd</title><link>/posts/from-docker-to-containerd/</link><pubDate>Fri, 04 Dec 2020 18:45:04 +0000</pubDate><guid>/posts/from-docker-to-containerd/</guid><description>On December 2nd, a surprise announcement made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.
+Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means in specific contexts, many people panicked - myself included. Because of its sheer popularity, Docker has become synonymous with &amp;ldquo;containers&amp;rdquo;. However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images.</description><content>&lt;p>On December 2nd, a &lt;a href="https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/">surprise announcement&lt;/a> made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.&lt;/p>
+&lt;h3 id="oh-no">Oh no!&lt;/h3>
+&lt;p>Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means in specific contexts, many people panicked - myself included. Because of its sheer popularity, Docker has become synonymous with &amp;ldquo;containers&amp;rdquo;. However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images. The only thing Kubernetes is deprecating is using Docker as a container runtime, and the reasoning is sound.&lt;/p>
+&lt;p>Docker&amp;rsquo;s lack of support for the &amp;ldquo;Container Runtime Interface&amp;rdquo; API - or CRI, for short - forced Kubernetes to implement an abstraction layer called &amp;ldquo;dockershim&amp;rdquo; to allow Kubernetes to manage containers in Docker. The burden of maintaining dockershim was too great to bear, so they are deprecating dockershim in release 1.20, and will eventually remove it entirely in 1.22.&lt;/p>
+&lt;p>There are two other container runtimes featured in the Kubernetes quickstart guide as an alternative to Docker - &lt;code>containerd&lt;/code> and CRI-O. &lt;code>containerd&lt;/code> is the same runtime that Docker itself uses internally, just without the fancy Docker wrapping paper and tools.&lt;/p>
+&lt;h3 id="ugh">Ugh.&lt;/h3>
+&lt;p>Annoyingly enough, I had recently finished migrating my entire homelab container infrastructure to Kubernetes three months ago, with Docker as the container runtime. I initially thought, &amp;ldquo;Crap. Guess I&amp;rsquo;ll be rebuilding my cluster!&amp;rdquo; Then I began to think about what such a change would look like, and whether replacing Docker with &lt;code>containerd&lt;/code> in the same cluster is doable.&lt;/p>
+&lt;h3 id="hmm">Hmm&amp;hellip;&lt;/h3>
+&lt;p>Turns out, it is!&lt;/p>
+&lt;p>I have a 3-node HA cluster which I created using kubeadm. Because I have multiple control plane nodes, I can remove them one at a time using &lt;code>kubeadm reset&lt;/code>, rebuild them with &lt;code>containerd&lt;/code> instead of Docker, and then rejoin using &lt;code>kubeadm join&lt;/code>.&lt;/p>
+&lt;p>Here are the steps I came up with:&lt;/p>
+&lt;h3 id="uninstalling-docker">Uninstalling Docker&lt;/h3>
+&lt;ol>
+&lt;li>Using &lt;code>kubectl&lt;/code>, drain and evict pods from the target node.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl drain &lt;span style="color:#e6db74">${&lt;/span>node&lt;span style="color:#e6db74">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>On the target node, use &lt;code>kubeadm&lt;/code> to remove the node from the cluster.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm reset
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>Once &lt;code>kubeadm reset&lt;/code> is finished, stop Docker and finish cleaning up the node.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl stop docker
+rm -rf /etc/cni/net.d
+iptables --flush
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Uninstall the Docker CE suite and CLI.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get -y remove docker-ce*
+rm -rf /var/lib/docker/*
+rm -rf /var/lib/dockershim
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;li>Now&amp;rsquo;s a great time to update your kernel and OS packages&amp;hellip;&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get update
+apt-get -y dist-upgrade
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;li>&amp;hellip;and reboot!&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">shutdown -r now
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing-containerd">Installing containerd&lt;/h3>
+&lt;p>(These steps are lifted straight from the fantastic &lt;a href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd">k8s containerd docs&lt;/a>!)&lt;/p>
+&lt;ol start="7">
+&lt;li>Apply the module configs for &lt;code>containerd&lt;/code>&amp;rsquo;s required kernel modules.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
+&lt;/span>&lt;span style="color:#e6db74">overlay
+&lt;/span>&lt;span style="color:#e6db74">br_netfilter
+&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
+sudo modprobe overlay
+sudo modprobe br_netfilter
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
+&lt;li>Set sysctl tuning parameters for Kubernetes CRI&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+&lt;/span>&lt;span style="color:#e6db74">net.ipv4.ip_forward = 1
+&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
+sysctl --system
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
+&lt;li>Install &lt;code>containerd&lt;/code> if not already installed&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get install -y containerd.io
+&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h5 id="a-note-on-filesystems">A note on filesystems&lt;/h5>
+&lt;p>Since these nodes were running Docker, all of the container data is stored in /var/lib/docker. With &lt;code>containerd&lt;/code>, container data is now stored in /var/lib/containerd. If you had the Docker data directory on its own filesystem, you&amp;rsquo;ll need to remove it and create one for &lt;code>containerd&lt;/code>. The exact steps depend in your system, so I won&amp;rsquo;t include them here.&lt;/p>
+&lt;h5 id="now-back-to-the-fun">Now back to the fun!&lt;/h5>
+&lt;hr>
+&lt;ol start="10">
+&lt;li>Generate a default configuration:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mkdir -p /etc/containerd
+containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="11">
+&lt;li>Modify the &lt;code>config.toml&lt;/code> file generated above to enable the systemd cgroup driver:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-toml" data-lang="toml">[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>]
+...
+[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>.&lt;span style="color:#a6e22e">options&lt;/span>]
+&lt;span style="color:#a6e22e">SystemdCgroup&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="12">
+&lt;li>Now enable and start &lt;code>containerd&lt;/code>!&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl enable --now containerd
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="13">
+&lt;li>Make sure &lt;code>containerd&lt;/code> is happy before proceeding.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl status containerd
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your system is now fully configured with the &lt;code>containerd&lt;/code> runtime - but before we rejoin the cluster, there&amp;rsquo;s one more step to get kubeadm to play nicely with it!&lt;/p>
+&lt;h3 id="updating-the-kubelet-configuration">Updating the kubelet configuration&lt;/h3>
+&lt;p>Since this cluster was originally built with the Docker runtime, the default kubelet configuration does not explicitly set a cgroup driver. By default, kubeadm with Docker auto-detects the cgroup driver - but other runtimes like &lt;code>containerd&lt;/code> don&amp;rsquo;t support that yet. As a result, when you &lt;code>kubeadm join&lt;/code> a &lt;code>containerd&lt;/code> node without a cgroup driver specified, the kubelet won&amp;rsquo;t start. You can ninja-edit the &lt;code>/var/lib/kubelet/config.yaml&lt;/code> file when joining and then restart the kubelet, but that&amp;rsquo;s tedious and unnecessary.&lt;/p>
+&lt;p>Fortunately, we can update the baseline kubelet config at the cluster level to specify the right cgroup driver to use.&lt;/p>
+&lt;ol start="14">
+&lt;li>Edit the baseline kubelet config for your Kubernetes version - 1.18, 1.19, etc.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl edit cm -n kube-system kubelet-config-1.18
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="15">
+&lt;li>Add the following entry for &lt;code>cgroupDriver&lt;/code>:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="color:#f92672">data&lt;/span>:
+&lt;span style="color:#f92672">kubelet&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> ...
+&lt;/span>&lt;span style="color:#e6db74"> cgroupDriver: systemd
+&lt;/span>&lt;span style="color:#e6db74"> ...&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="joining-the-cluster">Joining the cluster&lt;/h3>
+&lt;ol start="16">
+&lt;li>Proceed to &lt;code>kubeadm join&lt;/code> your node with the appropriate kubeadm command! You can run &lt;code>kubeadm token create --print-join-command&lt;/code> to create a new token.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm join 123.45.67.89:6443 --token &amp;lt;...snip...&amp;gt; --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
+&lt;h3 id="clean-up">Clean-up&lt;/h3>
+&lt;p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&amp;rsquo;re satisfied and the node shows &lt;code>Ready&lt;/code> in &lt;code>kubectl get nodes&lt;/code>, you can uncordon the node with &lt;code>kubectl uncordon&lt;/code>.&lt;/p>
+&lt;p>And finally, if necessary, don&amp;rsquo;t forget to re-taint your new control plane node! When &lt;code>kubeadm&lt;/code> rejoins the node, it applies the same default restriction to prevent control plane nodes from running worker pods. I find separate control planes unnecessary for my homelab, so I taint them to allow pods to run anywhere.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl taint nodes --all node-role.kubernetes.io/master-
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
+&lt;p>Now, granted - this process is &lt;em>extremely&lt;/em> unnecessary, and runs contrary to the cloud ethos that nodes should be treated like cattle. But for someone running a small bare-metal environment - where provisioning new nodes &lt;em>isn&amp;rsquo;t&lt;/em> entirely automated - these steps save a lot of time otherwise spent rebuilding VMs from the ground up, assigning IP addresses, updating DNS, and potentially building a whole new cluster.&lt;/p>
+&lt;p>And as an &lt;em>added&lt;/em> bonus, I now know more about Kubernetes and container runtimes than I did last week.&lt;/p></content></item></channel></rss>

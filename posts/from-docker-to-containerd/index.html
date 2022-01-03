@@ -1,0 +1,229 @@
+<!doctype html><html lang=en>
+<head>
+<title>Migrating Kubernetes from Docker to containerd :: Buffer Overflow</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="On December 2nd, a surprise announcement made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.
+Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means in specific contexts, many people panicked - myself included. Because of its sheer popularity, Docker has become synonymous with &amp;ldquo;containers&amp;rdquo;. However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=/posts/from-docker-to-containerd/>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-23906734-2','auto'),ga('send','pageview'))</script>
+<link rel=stylesheet href=assets/style.css>
+<link rel=stylesheet href=assets/blue.css>
+<link rel=apple-touch-icon href=img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=images/favicon.ico>
+<meta name=twitter:card content="summary">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migrating Kubernetes from Docker to containerd">
+<meta property="og:description" content="On December 2nd, a surprise announcement made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.
+Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means in specific contexts, many people panicked - myself included. Because of its sheer popularity, Docker has become synonymous with &amp;ldquo;containers&amp;rdquo;. However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images.">
+<meta property="og:url" content="/posts/from-docker-to-containerd/">
+<meta property="og:site_name" content="Buffer Overflow">
+<meta property="og:image" content="images/2020/12/teng-yuhong-qMehmIyaXvY-unsplash.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:section" content="kubernetes">
+<meta property="article:section" content="docker">
+<meta property="article:section" content="homelab">
+<meta property="article:published_time" content="2020-12-04 18:45:04 +0000 UTC">
+</head>
+<body class=blue>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Buffer Overflow
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About me</a></li>
+<li><a href=https://github.com/danclough>GitHub</a></li>
+<li><a href=https://twitter.com/dan_clough>Twitter</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About me</a></li>
+<li><a href=https://github.com/danclough>GitHub</a></li>
+<li><a href=https://twitter.com/dan_clough>Twitter</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=/posts/from-docker-to-containerd/>Migrating Kubernetes from Docker to containerd</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2020-12-04
+</span>
+<span class=post-author>:: Dan</span>
+</div>
+<span class=post-tags>
+#<a href=tags/kubernetes/>kubernetes</a>&nbsp;
+#<a href=tags/docker/>docker</a>&nbsp;
+#<a href=tags/homelab/>homelab</a>&nbsp;
+</span>
+<img src=images/2020/12/teng-yuhong-qMehmIyaXvY-unsplash.jpg class=post-cover alt="Migrating Kubernetes from Docker to containerd" title="Cover Image">
+<div class=post-content><div>
+<p>On December 2nd, a <a href=https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/>surprise announcement</a> made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.</p>
+<h3 id=oh-no>Oh no!<a href=#oh-no class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Due to widespread confusion over what &ldquo;Docker&rdquo; means in specific contexts, many people panicked - myself included. Because of its sheer popularity, Docker has become synonymous with &ldquo;containers&rdquo;. However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images. The only thing Kubernetes is deprecating is using Docker as a container runtime, and the reasoning is sound.</p>
+<p>Docker&rsquo;s lack of support for the &ldquo;Container Runtime Interface&rdquo; API - or CRI, for short - forced Kubernetes to implement an abstraction layer called &ldquo;dockershim&rdquo; to allow Kubernetes to manage containers in Docker. The burden of maintaining dockershim was too great to bear, so they are deprecating dockershim in release 1.20, and will eventually remove it entirely in 1.22.</p>
+<p>There are two other container runtimes featured in the Kubernetes quickstart guide as an alternative to Docker - <code>containerd</code> and CRI-O. <code>containerd</code> is the same runtime that Docker itself uses internally, just without the fancy Docker wrapping paper and tools.</p>
+<h3 id=ugh>Ugh.<a href=#ugh class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Annoyingly enough, I had recently finished migrating my entire homelab container infrastructure to Kubernetes three months ago, with Docker as the container runtime. I initially thought, &ldquo;Crap. Guess I&rsquo;ll be rebuilding my cluster!&rdquo; Then I began to think about what such a change would look like, and whether replacing Docker with <code>containerd</code> in the same cluster is doable.</p>
+<h3 id=hmm>Hmm&mldr;<a href=#hmm class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Turns out, it is!</p>
+<p>I have a 3-node HA cluster which I created using kubeadm. Because I have multiple control plane nodes, I can remove them one at a time using <code>kubeadm reset</code>, rebuild them with <code>containerd</code> instead of Docker, and then rejoin using <code>kubeadm join</code>.</p>
+<p>Here are the steps I came up with:</p>
+<h3 id=uninstalling-docker>Uninstalling Docker<a href=#uninstalling-docker class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<ol>
+<li>Using <code>kubectl</code>, drain and evict pods from the target node.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl drain <span style=color:#e6db74>${</span>node<span style=color:#e6db74>}</span>
+</code></pre></div><ol start=2>
+<li>On the target node, use <code>kubeadm</code> to remove the node from the cluster.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubeadm reset
+</code></pre></div><ol start=3>
+<li>Once <code>kubeadm reset</code> is finished, stop Docker and finish cleaning up the node.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl stop docker
+rm -rf /etc/cni/net.d
+iptables --flush
+</code></pre></div><ol start=4>
+<li>Uninstall the Docker CE suite and CLI.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt-get -y remove docker-ce*
+rm -rf /var/lib/docker/*
+rm -rf /var/lib/dockershim
+</code></pre></div><ol start=5>
+<li>Now&rsquo;s a great time to update your kernel and OS packages&mldr;</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt-get update
+apt-get -y dist-upgrade
+</code></pre></div><ol start=6>
+<li>&mldr;and reboot!</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>shutdown -r now
+</code></pre></div><h3 id=installing-containerd>Installing containerd<a href=#installing-containerd class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>(These steps are lifted straight from the fantastic <a href=https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd>k8s containerd docs</a>!)</p>
+<ol start=7>
+<li>Apply the module configs for <code>containerd</code>&rsquo;s required kernel modules.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
+</span><span style=color:#e6db74>overlay
+</span><span style=color:#e6db74>br_netfilter
+</span><span style=color:#e6db74>EOF</span>
+sudo modprobe overlay
+sudo modprobe br_netfilter
+</code></pre></div><ol start=8>
+<li>Set sysctl tuning parameters for Kubernetes CRI</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+</span><span style=color:#e6db74>net.bridge.bridge-nf-call-iptables  = 1
+</span><span style=color:#e6db74>net.ipv4.ip_forward                 = 1
+</span><span style=color:#e6db74>net.bridge.bridge-nf-call-ip6tables = 1
+</span><span style=color:#e6db74>EOF</span>
+sysctl --system
+</code></pre></div><ol start=9>
+<li>Install <code>containerd</code> if not already installed</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apt-get install -y containerd.io
+</code></pre></div><hr>
+<h5 id=a-note-on-filesystems>A note on filesystems<a href=#a-note-on-filesystems class=hanchor arialabel=Anchor>&#8983;</a> </h5>
+<p>Since these nodes were running Docker, all of the container data is stored in /var/lib/docker. With <code>containerd</code>, container data is now stored in /var/lib/containerd. If you had the Docker data directory on its own filesystem, you&rsquo;ll need to remove it and create one for <code>containerd</code>. The exact steps depend in your system, so I won&rsquo;t include them here.</p>
+<h5 id=now-back-to-the-fun>Now back to the fun!<a href=#now-back-to-the-fun class=hanchor arialabel=Anchor>&#8983;</a> </h5>
+<hr>
+<ol start=10>
+<li>Generate a default configuration:</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir -p /etc/containerd
+containerd config default &gt; /etc/containerd/config.toml
+</code></pre></div><ol start=11>
+<li>Modify the <code>config.toml</code> file generated above to enable the systemd cgroup driver:</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[<span style=color:#a6e22e>plugins</span>.<span style=color:#e6db74>&#34;io.containerd.grpc.v1.cri&#34;</span>.<span style=color:#a6e22e>containerd</span>.<span style=color:#a6e22e>runtimes</span>.<span style=color:#a6e22e>runc</span>]
+  ...
+  [<span style=color:#a6e22e>plugins</span>.<span style=color:#e6db74>&#34;io.containerd.grpc.v1.cri&#34;</span>.<span style=color:#a6e22e>containerd</span>.<span style=color:#a6e22e>runtimes</span>.<span style=color:#a6e22e>runc</span>.<span style=color:#a6e22e>options</span>]
+    <span style=color:#a6e22e>SystemdCgroup</span> = <span style=color:#66d9ef>true</span>
+</code></pre></div><ol start=12>
+<li>Now enable and start <code>containerd</code>!</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl enable --now containerd
+</code></pre></div><ol start=13>
+<li>Make sure <code>containerd</code> is happy before proceeding.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl status containerd
+</code></pre></div><p>Your system is now fully configured with the <code>containerd</code> runtime - but before we rejoin the cluster, there&rsquo;s one more step to get kubeadm to play nicely with it!</p>
+<h3 id=updating-the-kubelet-configuration>Updating the kubelet configuration<a href=#updating-the-kubelet-configuration class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Since this cluster was originally built with the Docker runtime, the default kubelet configuration does not explicitly set a cgroup driver. By default, kubeadm with Docker auto-detects the cgroup driver - but other runtimes like <code>containerd</code> don&rsquo;t support that yet. As a result, when you <code>kubeadm join</code> a <code>containerd</code> node without a cgroup driver specified, the kubelet won&rsquo;t start. You can ninja-edit the <code>/var/lib/kubelet/config.yaml</code> file when joining and then restart the kubelet, but that&rsquo;s tedious and unnecessary.</p>
+<p>Fortunately, we can update the baseline kubelet config at the cluster level to specify the right cgroup driver to use.</p>
+<ol start=14>
+<li>Edit the baseline kubelet config for your Kubernetes version - 1.18, 1.19, etc.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl edit cm -n kube-system kubelet-config-1.18
+</code></pre></div><ol start=15>
+<li>Add the following entry for <code>cgroupDriver</code>:</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>data</span>:
+  <span style=color:#f92672>kubelet</span>: |<span style=color:#e6db74>
+</span><span style=color:#e6db74>  ...
+</span><span style=color:#e6db74>    cgroupDriver: systemd
+</span><span style=color:#e6db74>  ...</span>  
+</code></pre></div><h3 id=joining-the-cluster>Joining the cluster<a href=#joining-the-cluster class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<ol start=16>
+<li>Proceed to <code>kubeadm join</code> your node with the appropriate kubeadm command! You can run <code>kubeadm token create --print-join-command</code> to create a new token.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubeadm join 123.45.67.89:6443 --token &lt;...snip...&gt; --discovery-token-ca-cert-hash sha256:&lt;...snip...&gt; <span style=color:#f92672>[</span>--control-plane --certificate-key &lt;...snip...&gt;<span style=color:#f92672>]</span>
+</code></pre></div><p>For control plane nodes, be sure to include the <code>--control-plane</code> flag and <code>--certificate-key</code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use <code>kubeadm init phase upload-certs --upload-certs</code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to <code>kubeadm join</code>.</p>
+<h3 id=clean-up>Clean-up<a href=#clean-up class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&rsquo;re satisfied and the node shows <code>Ready</code> in <code>kubectl get nodes</code>, you can uncordon the node with <code>kubectl uncordon</code>.</p>
+<p>And finally, if necessary, don&rsquo;t forget to re-taint your new control plane node! When <code>kubeadm</code> rejoins the node, it applies the same default restriction to prevent control plane nodes from running worker pods. I find separate control planes unnecessary for my homelab, so I taint them to allow pods to run anywhere.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubectl taint nodes --all node-role.kubernetes.io/master-
+</code></pre></div><h3 id=final-thoughts>Final thoughts<a href=#final-thoughts class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Now, granted - this process is <em>extremely</em> unnecessary, and runs contrary to the cloud ethos that nodes should be treated like cattle. But for someone running a small bare-metal environment - where provisioning new nodes <em>isn&rsquo;t</em> entirely automated - these steps save a lot of time otherwise spent rebuilding VMs from the ground up, assigning IP addresses, updating DNS, and potentially building a whole new cluster.</p>
+<p>And as an <em>added</em> bonus, I now know more about Kubernetes and container runtimes than I did last week.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=/posts/kubernetes-at-home/>
+<span class=button__icon>←</span>
+<span class=button__text>Kubernetes @ Home</span>
+</a>
+</span>
+<span class="button next">
+<a href=/posts/whats-in-my-lab/>
+<span class=button__text>What's In My Lab</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=assets/main.js></script>
+<script src=assets/prism.js></script>
+</div>
+</body>
+</html>
