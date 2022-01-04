@@ -11,6 +11,7 @@ Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means 
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-23906734-2','auto'),ga('send','pageview'))</script>
 <link rel=stylesheet href=/assets/style.css>
 <link rel=stylesheet href=/assets/blue.css>
+<link rel=stylesheet href=/style.css>
 <link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png>
 <link rel="shortcut icon" href=/images/favicon.ico>
 <meta name=twitter:card content="summary">
@@ -44,16 +45,23 @@ Buffer Overflow
 </div>
 <nav class=menu>
 <ul class="menu__inner menu__inner--desktop">
+<ul class=menu__sub-inner>
+<li class=menu__sub-inner-more-trigger>File ▾</li>
+<ul class="menu__sub-inner-more hidden">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
+</ul>
+</ul>
 </ul>
 <ul class="menu__inner menu__inner--mobile">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
 </ul>
 </nav>
 </header>
@@ -183,7 +191,10 @@ containerd config default &gt; /etc/containerd/config.toml
 <ol start=16>
 <li>Proceed to <code>kubeadm join</code> your node with the appropriate kubeadm command! You can run <code>kubeadm token create --print-join-command</code> to create a new token.</li>
 </ol>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubeadm join 123.45.67.89:6443 --token &lt;...snip...&gt; --discovery-token-ca-cert-hash sha256:&lt;...snip...&gt; <span style=color:#f92672>[</span>--control-plane --certificate-key &lt;...snip...&gt;<span style=color:#f92672>]</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kubeadm join 123.45.67.89:6443 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  --token &lt;...snip...&gt; <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  --discovery-token-ca-cert-hash sha256:&lt;...snip...&gt; <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  <span style=color:#f92672>[</span>--control-plane --certificate-key &lt;...snip...&gt;<span style=color:#f92672>]</span>
 </code></pre></div><p>For control plane nodes, be sure to include the <code>--control-plane</code> flag and <code>--certificate-key</code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use <code>kubeadm init phase upload-certs --upload-certs</code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to <code>kubeadm join</code>.</p>
 <h3 id=clean-up>Clean-up<a href=#clean-up class=hanchor arialabel=Anchor>&#8983;</a> </h3>
 <p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&rsquo;re satisfied and the node shows <code>Ready</code> in <code>kubectl get nodes</code>, you can uncordon the node with <code>kubectl uncordon</code>.</p>
@@ -217,8 +228,8 @@ containerd config default &gt; /etc/containerd/config.toml
 </div>
 <footer class=footer>
 <div class=footer__inner>
-<div class=copyright>
-<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<div class="copyright copyright--user">
+<span>All original content licensed under <a href=https://creativecommons.org/licenses/by-sa/4.0/legalcode>CC BY-SA 4.0</a> unless noted otherwise.</span>
 <span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
 </div>
 </div>

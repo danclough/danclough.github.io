@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Buffer Overflow</title><link>/posts/</link><description>Recent content in Posts on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 31 Dec 2021 14:34:28 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Ampere Altra vs Raspberry Pi 4</title><link>/posts/ampere-altra-a1/</link><pubDate>Fri, 31 Dec 2021 14:34:28 +0000</pubDate><guid>/posts/ampere-altra-a1/</guid><description>In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments. Patrick Kennedy of ServeTheHome covered the release with an excellent in-depth article last year which I highly recommend reading.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Buffer Overflow</title><link>/posts/</link><description>Recent content in Posts on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>All original content licensed under &lt;a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0&lt;/a> unless noted otherwise.</copyright><lastBuildDate>Fri, 31 Dec 2021 14:34:28 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Ampere Altra vs Raspberry Pi 4</title><link>/posts/ampere-altra-a1/</link><pubDate>Fri, 31 Dec 2021 14:34:28 +0000</pubDate><guid>/posts/ampere-altra-a1/</guid><description>In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments. Patrick Kennedy of ServeTheHome covered the release with an excellent in-depth article last year which I highly recommend reading.
 In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup. And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their &amp;ldquo;Always Free&amp;rdquo; tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.</description><content>&lt;p>In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments. Patrick Kennedy of ServeTheHome covered the release with an &lt;a href="https://www.servethehome.com/ampere-altra-80-arm-cores-for-cloud/">excellent in-depth article&lt;/a> last year which I highly recommend reading.&lt;/p>
 &lt;p>In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup. And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their &amp;ldquo;Always Free&amp;rdquo; tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/12/Ampere-Altra-Processor-Complex.jpg" />
 &lt;figcaption class="center" >Overview of Ampere Altra specs, courtesy of Patrick Kennedy at &lt;a href="https://www.servethehome.com">ServeTheHome&lt;/a>.&lt;/figcaption>
 &lt;/figure>
@@ -234,7 +234,7 @@ System Benchmarks Index Score 730.7
 &lt;p>The Sysbench RAM result shows an incredible &lt;strong>130% increase&lt;/strong> in memory throughput on the A1. This result is surprising on its surface - after all, both the Altra and the Cortex-A72 use DDR4 RAM, right? Not quite.&lt;/p>
 &lt;p>As a small, low-power/embedded style device, the Raspberry Pi 4 carries the burden of an insanely low power budget - less than 10W. Cutting consumption on the CPU alone isn&amp;rsquo;t enough to meet those demands, however, so the Pi 4 uses a low-power variant of DDR4 called &lt;strong>LPDDR4&lt;/strong>, intended primarily for mobile platforms.&lt;/p>
 &lt;p>As discussed in &lt;a href="https://www.hardwaretimes.com/lpddr4-vs-ddr4-vs-lpddr4x-memory-whats-the-difference/">this DDR4 explainer&lt;/a> from HardwareTimes, LPDDR4 makes several key trade-offs for power consumption that result in greatly decreased memory bandwidth. While the Pi 4&amp;rsquo;s DRAM operates at the same 3200MT/s rate as the Altra, its performance is ultimately kneecapped by a single-channel memory implementation and LPDDR4&amp;rsquo;s greatly reduced 32-bit bus width.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/12/50120709591_4c50126bda_c.jpg" />
 &lt;figcaption class="center" >The lone LPDDR4 package on the Raspberry Pi 4B.&lt;br/>Photo by &lt;a href="https://flic.kr/p/2jmZJMn">Jeff Geerling&lt;/a>, licensed under &lt;a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0&lt;/a>&lt;/figcaption>
 &lt;/figure>
@@ -242,17 +242,17 @@ System Benchmarks Index Score 730.7
 &lt;p>All that being said, I went into this experiment fully expecting to see performance of the free Ampere VM roughly on-par with the Pi 4, at best. My suspicions were based on the anemic performance of other cloud providers' free tier compute instances - AWS&amp;rsquo;s t2.micro, Azure&amp;rsquo;s B1s burstable, and even Oracle&amp;rsquo;s existing AMD Epyc &amp;ldquo;micro&amp;rdquo; shape. The Ampere VMs in Oracle&amp;rsquo;s free tier are surprisingly capable and unlike any other free offering I&amp;rsquo;ve seen to date.&lt;/p></content></item><item><title>Implementing a Private CA for the Home Lab</title><link>/posts/implementing-a-private-ca-for-home-use/</link><pubDate>Sun, 31 Oct 2021 01:29:21 +0000</pubDate><guid>/posts/implementing-a-private-ca-for-home-use/</guid><description>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.
 As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic.</description><content>&lt;p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.&lt;/p>
 &lt;p>As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic. This of course allows for a variety of attack methods against locally-hosted services.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/unencrypted.png" />
 &lt;figcaption class="center" >A common private network pitfall - unencrypted traffic and implicit trust&lt;/figcaption>
 &lt;/figure>
 &lt;p>Let&amp;rsquo;s focus on the two most common attacks - sniffing, where a malicious entity with access to your network devices mirrors packets to their own system to inspect the contents; and Man-in-the-Middle (MitM), where the attacker actually intercepts a traffic flow and impersonates the service on the other end.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/attacks.png" />
 &lt;figcaption class="center" >Potential attack vectors - packet sniffing and Man-in-the-Middle&lt;/figcaption>
 &lt;/figure>
 &lt;p>These are two of the most common attacks around because they&amp;rsquo;re easy to implement and difficult to detect. Fortunately, they are also the easiest to mitigate. First, enforce encryption on the traffic to prevent a sniffing attack; and second, have your services provide a signed certificate to prove that they are who they say they are.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/encrypted.png" />
 &lt;figcaption class="center" >The solution - protect traffic with HTTPS backed by a trusted certificate hierarchy&lt;/figcaption>
 &lt;/figure>
@@ -262,7 +262,7 @@ As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound 
 &lt;p>While I could go into great detail showing you how to use the OpenSSL command line to generate all the certificates, that would be a waste of my precious bandwidth. The Google search results for &amp;ldquo;OpenSSL Root CA&amp;rdquo; are littered with hundreds of guides written by people much smarter and more eloquent than me. And since working on a command line is a major part of my profession, I&amp;rsquo;ve come to appreciate a good GUI when one is available.&lt;/p>
 &lt;p>For creating and managing a Root CA, I encourage you to check out a fantastic multi-platform application called &lt;a href="https://hohnstaedt.de/xca/">XCA&lt;/a>.&lt;/p>
 &lt;p>XCA handles almost every function of the X.509 certificate lifecycle, including creating private keys, generating certificate requests, and signing requests as a self-signed certificate or using an existing certificate key pair stored in XCA&amp;rsquo;s database. I use XCA to manage my Root CA certificate and key, both of which are safely stored in an encrypted offline SQLite database.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/xca_private_key.png" />
 &lt;figcaption class="center" >Creating a new EC private key in XCA&lt;/figcaption>
 &lt;/figure>
@@ -270,12 +270,12 @@ As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound 
 &lt;p>To create the Root CA, we must also create a Certificate Signing Request. The CSR is signed by the private key generated above, and the resulting certificate will carry the private key&amp;rsquo;s unique fingerprint.&lt;/p>
 &lt;p>One of the most helpful features of XCA that I&amp;rsquo;ve come to appreciate is the ability to use templates to generate a certificate signing request. XCA ships with a generic CA template that you can select to generate a functional CA with minimal effort.&lt;/p>
 &lt;p>On the Subject tab of the Certificate creation wizard, you&amp;rsquo;re presented with a number of fields that identify who or what the certificate represents. All of these fields are technically optional, but at the very least, you should set a descriptive Common Name to identify your Root CA certificate in browsers and other applications.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/root_ca_1.png" />
 &lt;figcaption class="center" >Fill out as much or as little as you'd like - it's your CA!&lt;/figcaption>
 &lt;/figure>
 &lt;p>On the Extensions tab, you&amp;rsquo;ll set important details like Path Length and the certificate&amp;rsquo;s lifespan. Since this is a Root CA, you should select a reasonably long lifetime. Your intermediate certificates will have shorter lifespans because they&amp;rsquo;ll be used more frequently, and as long as the Root CA is valid, you can always generate another intermediate.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/root_ca_2.png" />
 &lt;figcaption class="center" >100 years? Why not - you're in this for the long haul.&lt;/figcaption>
 &lt;/figure>
@@ -284,7 +284,7 @@ As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound 
 &lt;p>&lt;strong>Last but not least,&lt;/strong> do not forget to encrypt your XCA database or export the Root CA certificate and key with a strong password. If you lose the key, you lose the ability to sign anything with the Root CA.&lt;/p>
 &lt;h2 id="step-2---create-an-intermediate-ca">Step 2 - Create an Intermediate CA&lt;/h2>
 &lt;p>In a typical PKI heirarchy, the Root CA never directly signs an &amp;ldquo;End Entity&amp;rdquo; certificate such as a webserver or mTLS client certificate. An &lt;strong>Intermediate CA&lt;/strong> is a certificate that receives its authority from the Root CA, and signs certificates for other subordinate CAs or End Entities directly.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/chain_of_trust.png" />
 &lt;/figure>
 &lt;p>The process to create an Intermediate CA is almost identical to a Root CA, with the following exceptions:&lt;/p>
@@ -314,7 +314,7 @@ As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound 
 &lt;p>I even created a &lt;a href="https://gist.github.com/danclough/ee0b25c285cc2fc280e5d2d3a6f855d7">template for a systemd unit file&lt;/a> to run the &lt;code>step&lt;/code> CLI in daemon mode, watching and renewing certificates automatically when they come close to expiring.&lt;/p>
 &lt;h2 id="the-final-product">The Final Product&lt;/h2>
 &lt;p>The end result of my home lab PKI experiment looks like this:&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/10/hierarchy.png" />
 &lt;/figure>
 &lt;p>All trust originates with the Root CA, an offline ECC certificate stored in an encrypted database.&lt;/p>
@@ -343,7 +343,7 @@ For instance, we put all of our important files - recipes, documents, photos, ho
 &lt;/ol>
 &lt;p>I fully intend for this blog to be a place for learning and sharing my experiences, so in a coming post I&amp;rsquo;ll attempt to document every step of the process and write about a few of the hurdles I had to overcome. I&amp;rsquo;ll also share my thoughts on a few **** of the fantastic open-source products that I tried out along the way.&lt;/p></content></item><item><title>Kubernetes @ Home</title><link>/posts/kubernetes-at-home/</link><pubDate>Tue, 19 Jan 2021 14:33:00 +0000</pubDate><guid>/posts/kubernetes-at-home/</guid><description>Now that I&amp;rsquo;ve shared some of my physical infrastructure in my home lab, I want to share the service topology for the specific services I run at home for home automation, secure storage, and even this website.
 Services As you can see, a number of the specific services I run are focused around infrastructure and system management. Services such as Grafana and Kibana are essential for monitoring and observability for my entire home lab environment.</description><content>&lt;p>Now that I&amp;rsquo;ve shared some of my physical infrastructure in my home lab, I want to share the service topology for the specific services I run at home for home automation, secure storage, and even this website.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/05/service-topology-1.png" />
 &lt;/figure>
 &lt;h2 id="services">Services&lt;/h2>
@@ -471,7 +471,10 @@ containerd config default &amp;gt; /etc/containerd/config.toml
 &lt;ol start="16">
 &lt;li>Proceed to &lt;code>kubeadm join&lt;/code> your node with the appropriate kubeadm command! You can run &lt;code>kubeadm token create --print-join-command&lt;/code> to create a new token.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm join 123.45.67.89:6443 --token &amp;lt;...snip...&amp;gt; --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm join 123.45.67.89:6443 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --token &amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
 &lt;h3 id="clean-up">Clean-up&lt;/h3>
 &lt;p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&amp;rsquo;re satisfied and the node shows &lt;code>Ready&lt;/code> in &lt;code>kubectl get nodes&lt;/code>, you can uncordon the node with &lt;code>kubectl uncordon&lt;/code>.&lt;/p>
@@ -485,7 +488,7 @@ Hardware My home lab runs mainly on low-power Dell OptiPlex ultra-small-form-fac
 &lt;p>My home lab runs mainly on low-power Dell OptiPlex ultra-small-form-factor (USFF) hardware. I wanted this lab to be always-on - so small, quiet, and energy-efficient hardware is a must-have. The notable exception is my NAS, a 2U Dell PowerEdge rackmount server with an array of 3.5&amp;quot; SAS spinning disks striped in a large ZFS RAID-Z2 pool.&lt;/p>
 &lt;h3 id="hypervisors">Hypervisors&lt;/h3>
 &lt;p>For several years, I ran VMware ESXi mostly as a learning opportunity. Over time I found that the overhead of running ESXi on low-spec commodity hardware was too great, and decided to shift my workloads over to &lt;a href="https://www.proxmox.com/">Proxmox VE&lt;/a>.&lt;/p>
-&lt;figure class="left" >
+&lt;figure class="center" >
 &lt;img src="/images/2021/05/infra_services.png" />
 &lt;/figure>
 &lt;h3 id="services">Services&lt;/h3>

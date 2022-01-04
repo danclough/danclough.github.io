@@ -10,6 +10,7 @@
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-23906734-2','auto'),ga('send','pageview'))</script>
 <link rel=stylesheet href=/assets/style.css>
 <link rel=stylesheet href=/assets/blue.css>
+<link rel=stylesheet href=/style.css>
 <link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png>
 <link rel="shortcut icon" href=/images/favicon.ico>
 <meta name=twitter:card content="summary">
@@ -39,16 +40,23 @@ Buffer Overflow
 </div>
 <nav class=menu>
 <ul class="menu__inner menu__inner--desktop">
+<ul class=menu__sub-inner>
+<li class=menu__sub-inner-more-trigger>File ▾</li>
+<ul class="menu__sub-inner-more hidden">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
+</ul>
+</ul>
 </ul>
 <ul class="menu__inner menu__inner--mobile">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
 </ul>
 </nav>
 </header>
@@ -70,8 +78,8 @@ Buffer Overflow
 </div>
 <footer class=footer>
 <div class=footer__inner>
-<div class=copyright>
-<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<div class="copyright copyright--user">
+<span>All original content licensed under <a href=https://creativecommons.org/licenses/by-sa/4.0/legalcode>CC BY-SA 4.0</a> unless noted otherwise.</span>
 <span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
 </div>
 </div>

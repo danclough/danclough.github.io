@@ -11,6 +11,7 @@ As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound 
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-23906734-2','auto'),ga('send','pageview'))</script>
 <link rel=stylesheet href=/assets/style.css>
 <link rel=stylesheet href=/assets/blue.css>
+<link rel=stylesheet href=/style.css>
 <link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png>
 <link rel="shortcut icon" href=/images/favicon.ico>
 <meta name=twitter:card content="summary">
@@ -41,16 +42,23 @@ Buffer Overflow
 </div>
 <nav class=menu>
 <ul class="menu__inner menu__inner--desktop">
+<ul class=menu__sub-inner>
+<li class=menu__sub-inner-more-trigger>File ▾</li>
+<ul class="menu__sub-inner-more hidden">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
+</ul>
+</ul>
 </ul>
 <ul class="menu__inner menu__inner--mobile">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
 </ul>
 </nav>
 </header>
@@ -66,17 +74,17 @@ Buffer Overflow
 <div class=post-content><div>
 <p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &ldquo;Just Make It Work&rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.</p>
 <p>As a result, the largest and most easily exploitable gap you&rsquo;re bound to find in many home labs and small networks is unencrypted traffic. This of course allows for a variety of attack methods against locally-hosted services.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/unencrypted.png>
 <figcaption class=center>A common private network pitfall - unencrypted traffic and implicit trust</figcaption>
 </figure>
 <p>Let&rsquo;s focus on the two most common attacks - sniffing, where a malicious entity with access to your network devices mirrors packets to their own system to inspect the contents; and Man-in-the-Middle (MitM), where the attacker actually intercepts a traffic flow and impersonates the service on the other end.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/attacks.png>
 <figcaption class=center>Potential attack vectors - packet sniffing and Man-in-the-Middle</figcaption>
 </figure>
 <p>These are two of the most common attacks around because they&rsquo;re easy to implement and difficult to detect. Fortunately, they are also the easiest to mitigate. First, enforce encryption on the traffic to prevent a sniffing attack; and second, have your services provide a signed certificate to prove that they are who they say they are.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/encrypted.png>
 <figcaption class=center>The solution - protect traffic with HTTPS backed by a trusted certificate hierarchy</figcaption>
 </figure>
@@ -86,7 +94,7 @@ Buffer Overflow
 <p>While I could go into great detail showing you how to use the OpenSSL command line to generate all the certificates, that would be a waste of my precious bandwidth. The Google search results for &ldquo;OpenSSL Root CA&rdquo; are littered with hundreds of guides written by people much smarter and more eloquent than me. And since working on a command line is a major part of my profession, I&rsquo;ve come to appreciate a good GUI when one is available.</p>
 <p>For creating and managing a Root CA, I encourage you to check out a fantastic multi-platform application called <a href=https://hohnstaedt.de/xca/>XCA</a>.</p>
 <p>XCA handles almost every function of the X.509 certificate lifecycle, including creating private keys, generating certificate requests, and signing requests as a self-signed certificate or using an existing certificate key pair stored in XCA&rsquo;s database. I use XCA to manage my Root CA certificate and key, both of which are safely stored in an encrypted offline SQLite database.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/xca_private_key.png>
 <figcaption class=center>Creating a new EC private key in XCA</figcaption>
 </figure>
@@ -94,12 +102,12 @@ Buffer Overflow
 <p>To create the Root CA, we must also create a Certificate Signing Request. The CSR is signed by the private key generated above, and the resulting certificate will carry the private key&rsquo;s unique fingerprint.</p>
 <p>One of the most helpful features of XCA that I&rsquo;ve come to appreciate is the ability to use templates to generate a certificate signing request. XCA ships with a generic CA template that you can select to generate a functional CA with minimal effort.</p>
 <p>On the Subject tab of the Certificate creation wizard, you&rsquo;re presented with a number of fields that identify who or what the certificate represents. All of these fields are technically optional, but at the very least, you should set a descriptive Common Name to identify your Root CA certificate in browsers and other applications.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/root_ca_1.png>
 <figcaption class=center>Fill out as much or as little as you'd like - it's your CA!</figcaption>
 </figure>
 <p>On the Extensions tab, you&rsquo;ll set important details like Path Length and the certificate&rsquo;s lifespan. Since this is a Root CA, you should select a reasonably long lifetime. Your intermediate certificates will have shorter lifespans because they&rsquo;ll be used more frequently, and as long as the Root CA is valid, you can always generate another intermediate.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/root_ca_2.png>
 <figcaption class=center>100 years? Why not - you're in this for the long haul.</figcaption>
 </figure>
@@ -108,7 +116,7 @@ Buffer Overflow
 <p><strong>Last but not least,</strong> do not forget to encrypt your XCA database or export the Root CA certificate and key with a strong password. If you lose the key, you lose the ability to sign anything with the Root CA.</p>
 <h2 id=step-2---create-an-intermediate-ca>Step 2 - Create an Intermediate CA<a href=#step-2---create-an-intermediate-ca class=hanchor arialabel=Anchor>&#8983;</a> </h2>
 <p>In a typical PKI heirarchy, the Root CA never directly signs an &ldquo;End Entity&rdquo; certificate such as a webserver or mTLS client certificate. An <strong>Intermediate CA</strong> is a certificate that receives its authority from the Root CA, and signs certificates for other subordinate CAs or End Entities directly.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/chain_of_trust.png>
 </figure>
 <p>The process to create an Intermediate CA is almost identical to a Root CA, with the following exceptions:</p>
@@ -138,7 +146,7 @@ Buffer Overflow
 <p>I even created a <a href=https://gist.github.com/danclough/ee0b25c285cc2fc280e5d2d3a6f855d7>template for a systemd unit file</a> to run the <code>step</code> CLI in daemon mode, watching and renewing certificates automatically when they come close to expiring.</p>
 <h2 id=the-final-product>The Final Product<a href=#the-final-product class=hanchor arialabel=Anchor>&#8983;</a> </h2>
 <p>The end result of my home lab PKI experiment looks like this:</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/10/hierarchy.png>
 </figure>
 <p>All trust originates with the Root CA, an offline ECC certificate stored in an encrypted database.</p>
@@ -172,8 +180,8 @@ Buffer Overflow
 </div>
 <footer class=footer>
 <div class=footer__inner>
-<div class=copyright>
-<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<div class="copyright copyright--user">
+<span>All original content licensed under <a href=https://creativecommons.org/licenses/by-sa/4.0/legalcode>CC BY-SA 4.0</a> unless noted otherwise.</span>
 <span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
 </div>
 </div>

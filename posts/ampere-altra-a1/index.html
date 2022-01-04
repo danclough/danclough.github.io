@@ -11,6 +11,7 @@ In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to t
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-23906734-2','auto'),ga('send','pageview'))</script>
 <link rel=stylesheet href=/assets/style.css>
 <link rel=stylesheet href=/assets/blue.css>
+<link rel=stylesheet href=/style.css>
 <link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png>
 <link rel="shortcut icon" href=/images/favicon.ico>
 <meta name=twitter:card content="summary">
@@ -41,16 +42,23 @@ Buffer Overflow
 </div>
 <nav class=menu>
 <ul class="menu__inner menu__inner--desktop">
+<ul class=menu__sub-inner>
+<li class=menu__sub-inner-more-trigger>File ▾</li>
+<ul class="menu__sub-inner-more hidden">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
+</ul>
+</ul>
 </ul>
 <ul class="menu__inner menu__inner--mobile">
 <li><a href=/>Home</a></li>
 <li><a href=/about>About me</a></li>
 <li><a href=https://github.com/danclough>Code</a></li>
 <li><a href=https://twitter.com/dan_clough>Tweets</a></li>
+<li><a href="https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256">Exit</a></li>
 </ul>
 </nav>
 </header>
@@ -67,7 +75,7 @@ Buffer Overflow
 <div class=post-content><div>
 <p>In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments. Patrick Kennedy of ServeTheHome covered the release with an <a href=https://www.servethehome.com/ampere-altra-80-arm-cores-for-cloud/>excellent in-depth article</a> last year which I highly recommend reading.</p>
 <p>In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup. And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their &ldquo;Always Free&rdquo; tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/12/Ampere-Altra-Processor-Complex.jpg>
 <figcaption class=center>Overview of Ampere Altra specs, courtesy of Patrick Kennedy at <a href=https://www.servethehome.com>ServeTheHome</a>.</figcaption>
 </figure>
@@ -314,7 +322,7 @@ System Benchmarks Index Score                                         730.7
 <p>The Sysbench RAM result shows an incredible <strong>130% increase</strong> in memory throughput on the A1. This result is surprising on its surface - after all, both the Altra and the Cortex-A72 use DDR4 RAM, right? Not quite.</p>
 <p>As a small, low-power/embedded style device, the Raspberry Pi 4 carries the burden of an insanely low power budget - less than 10W. Cutting consumption on the CPU alone isn&rsquo;t enough to meet those demands, however, so the Pi 4 uses a low-power variant of DDR4 called <strong>LPDDR4</strong>, intended primarily for mobile platforms.</p>
 <p>As discussed in <a href=https://www.hardwaretimes.com/lpddr4-vs-ddr4-vs-lpddr4x-memory-whats-the-difference/>this DDR4 explainer</a> from HardwareTimes, LPDDR4 makes several key trade-offs for power consumption that result in greatly decreased memory bandwidth. While the Pi 4&rsquo;s DRAM operates at the same 3200MT/s rate as the Altra, its performance is ultimately kneecapped by a single-channel memory implementation and LPDDR4&rsquo;s greatly reduced 32-bit bus width.</p>
-<figure class=left>
+<figure class=center>
 <img src=/images/2021/12/50120709591_4c50126bda_c.jpg>
 <figcaption class=center>The lone LPDDR4 package on the Raspberry Pi 4B.<br>Photo by <a href=https://flic.kr/p/2jmZJMn>Jeff Geerling</a>, licensed under <a href=https://creativecommons.org/licenses/by/2.0/>CC BY 2.0</a></figcaption>
 </figure>
@@ -339,8 +347,8 @@ System Benchmarks Index Score                                         730.7
 </div>
 <footer class=footer>
 <div class=footer__inner>
-<div class=copyright>
-<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<div class="copyright copyright--user">
+<span>All original content licensed under <a href=https://creativecommons.org/licenses/by-sa/4.0/legalcode>CC BY-SA 4.0</a> unless noted otherwise.</span>
 <span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
 </div>
 </div>
