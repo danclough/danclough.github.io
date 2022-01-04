@@ -10,7 +10,7 @@ title = "Kubernetes @ Home"
 
 Now that I've shared some of my physical infrastructure in my home lab, I want to share the service topology for the specific services I run at home for home automation, secure storage, and even this website.
 
-{{< figure src="/images/2021/05/service-topology-1.png" >}}
+{{< figure src="/images/2021/05/service-topology-1.png" position="center" >}}
 
 ## Services
 

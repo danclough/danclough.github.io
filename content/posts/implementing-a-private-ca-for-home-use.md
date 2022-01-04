@@ -12,15 +12,15 @@ The low risk and low-to-no budget of a home lab environment often results in sec
 
 As a result, the largest and most easily exploitable gap you're bound to find in many home labs and small networks is unencrypted traffic.  This of course allows for a variety of attack methods against locally-hosted services.
 
-{{< figure src="/images/2021/10/unencrypted.png" caption="A common private network pitfall - unencrypted traffic and implicit trust" >}}
+{{< figure src="/images/2021/10/unencrypted.png" position="center" caption="A common private network pitfall - unencrypted traffic and implicit trust" >}}
 
 Let's focus on the two most common attacks - sniffing, where a malicious entity with access to your network devices mirrors packets to their own system to inspect the contents; and Man-in-the-Middle (MitM), where the attacker actually intercepts a traffic flow and impersonates the service on the other end.
 
-{{< figure src="/images/2021/10/attacks.png" caption="Potential attack vectors - packet sniffing and Man-in-the-Middle" >}}
+{{< figure src="/images/2021/10/attacks.png" position="center" caption="Potential attack vectors - packet sniffing and Man-in-the-Middle" >}}
 
 These are two of the most common attacks around because they're easy to implement and difficult to detect.  Fortunately, they are also the easiest to mitigate.  First, enforce encryption on the traffic to prevent a sniffing attack; and second, have your services provide a signed certificate to prove that they are who they say they are.
 
-{{< figure src="/images/2021/10/encrypted.png" caption="The solution - protect traffic with HTTPS backed by a trusted certificate hierarchy" >}}
+{{< figure src="/images/2021/10/encrypted.png" position="center" caption="The solution - protect traffic with HTTPS backed by a trusted certificate hierarchy" >}}
 
 There are almost as many examples available on the web for enabling HTTPS on a web server as there are web servers themselves.  Rather than rehash that process, this post will focus on setting up a **Public Key Infrastructure** (PKI) to facilitate issuing certificates to services on a local network and provide verification and revocation processes to maintain the integrity of your certificate hierarchy.
 
@@ -34,7 +34,7 @@ For creating and managing a Root CA, I encourage you to check out a fantastic mu
 
 XCA handles almost every function of the X.509 certificate lifecycle, including creating private keys, generating certificate requests, and signing requests as a self-signed certificate or using an existing certificate key pair stored in XCA's database.  I use XCA to manage my Root CA certificate and key, both of which are safely stored in an encrypted offline SQLite database.
 
-{{< figure src="/images/2021/10/xca_private_key.png" caption="Creating a new EC private key in XCA" >}}
+{{< figure src="/images/2021/10/xca_private_key.png" position="center" caption="Creating a new EC private key in XCA" >}}
 
 In XCA, I created a private key for my Root CA using the P-521 Elliptic Curve.  521 bits may be absolute overkill for a small home lab environment, but the upside of having a hierarchy is that you will rarely ever be signing things with the Root CA, to the point where the performance impact of choosing P-521 over P-256 is insignificant.
 
@@ -44,11 +44,11 @@ One of the most helpful features of XCA that I've come to appreciate is the abil
 
 On the Subject tab of the Certificate creation wizard, you're presented with a number of fields that identify who or what the certificate represents.  All of these fields are technically optional, but at the very least, you should set a descriptive Common Name to identify your Root CA certificate in browsers and other applications.
 
-{{< figure src="/images/2021/10/root_ca_1.png" caption="Fill out as much or as little as you'd like - it's your CA!" >}}
+{{< figure src="/images/2021/10/root_ca_1.png" position="center" caption="Fill out as much or as little as you'd like - it's your CA!" >}}
 
 On the Extensions tab, you'll set important details like Path Length and the certificate's lifespan.  Since this is a Root CA, you should select a reasonably long lifetime.  Your intermediate certificates will have shorter lifespans because they'll be used more frequently, and as long as the Root CA is valid, you can always generate another intermediate.
 
-{{< figure src="/images/2021/10/root_ca_2.png" caption="100 years? Why not - you're in this for the long haul." >}}
+{{< figure src="/images/2021/10/root_ca_2.png" position="center" caption="100 years? Why not - you're in this for the long haul." >}}
 
 The other fields on this page are not relevant for a Root CA, but will be necessary when creating Intermediates or End Entity certificates if you choose to publish a Certificate Revocation List or OCSP endpoint.
 
@@ -60,7 +60,7 @@ Once you click OK and sign your certificate, you have a functioning Root CA.  Yo
 
 In a typical PKI heirarchy, the Root CA never directly signs an "End Entity" certificate such as a webserver or mTLS client certificate.  An **Intermediate CA** is a certificate that receives its authority from the Root CA, and signs certificates for other subordinate CAs or End Entities directly.
 
-{{< figure src="/images/2021/10/chain_of_trust.png" >}}
+{{< figure src="/images/2021/10/chain_of_trust.png" position="center" >}}
 
 The process to create an Intermediate CA is almost identical to a Root CA, with the following exceptions:
 
@@ -98,7 +98,7 @@ I even created a [template for a systemd unit file](https://gist.github.com/danc
 
 The end result of my home lab PKI experiment looks like this:
 
-{{< figure src="/images/2021/10/hierarchy.png" >}}
+{{< figure src="/images/2021/10/hierarchy.png" position="center" >}}
 
 All trust originates with the Root CA, an offline ECC certificate stored in an encrypted database.
 

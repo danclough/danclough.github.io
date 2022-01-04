@@ -150,7 +150,10 @@ data:
 16. Proceed to `kubeadm join` your node with the appropriate kubeadm command!  You can run `kubeadm token create --print-join-command` to create a new token.
 
 ```bash
-kubeadm join 123.45.67.89:6443 --token <...snip...> --discovery-token-ca-cert-hash sha256:<...snip...> [--control-plane --certificate-key <...snip...>]
+kubeadm join 123.45.67.89:6443 \
+  --token <...snip...> \
+  --discovery-token-ca-cert-hash sha256:<...snip...> \
+  [--control-plane --certificate-key <...snip...>]
 ```
 
 For control plane nodes, be sure to include the `--control-plane` flag and `--certificate-key` for your cluster - otherwise the node will join as a worker!  I made this mistake and had to re-reset and rejoin the first node I converted.  Use `kubeadm init phase upload-certs --upload-certs` on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to `kubeadm join`.

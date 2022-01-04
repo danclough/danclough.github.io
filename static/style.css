@@ -1,0 +1,16 @@
+:root {
+    --accent: DodgerBlue;
+  }
+
+body {
+    background-color: rgb(32, 32, 32);
+  }
+
+code {
+    color: rgb(224, 224, 224);
+    font-family: 'Courier New', Courier, monospace !important;
+}
+
+.container {
+    max-width: 920px;
+}

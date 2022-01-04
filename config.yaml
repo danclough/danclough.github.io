@@ -8,7 +8,7 @@ params:
 #  author: "Dan Clough"
   contentTypeName: "posts"
   themeColor: "blue"
-  showMenuItems: 5
+  showMenuItems: 0
   fullWidthTheme: false
   centerTheme: true
   autoCover: true
@@ -18,10 +18,13 @@ languages:
   en:
     languageName: "English"
     title: "Buffer Overflow"
-    description: "A blog for my tech experiments and experiences"
-    menuMore: "Show more"
+    subtitle: "A blog for my tech experiments and experiences"
+    copyright: "All original content licensed under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> unless noted otherwise."
+    menuMore: "File"
     readMore: "Read more"
     readOtherPosts: "Read other posts"
+    missingContentMessage: "Page not found"
+    missingBackButtonLabel: "Back to home page"
     params:
       logo:
         logoText: Buffer Overflow
@@ -44,8 +47,12 @@ languages:
         name: Code
         url: https://github.com/danclough
         weight: 1
+      - identifier: exit
+        name: Exit
+        url: https://bellard.org/jslinux/vm.html?cpu=riscv64&url=buildroot-riscv64.cfg&mem=256
+        weight: 10
 
-#markup:
-#  goldmark:
-#    renderer:
-#      unsafe: true
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

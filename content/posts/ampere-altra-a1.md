@@ -13,7 +13,7 @@ In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra
 
 In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup.  And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their "Always Free" tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.
 
-{{< figure src="/images/2021/12/Ampere-Altra-Processor-Complex.jpg" caption="Overview of Ampere Altra specs, courtesy of Patrick Kennedy at <a href=\"https://www.servethehome.com\">ServeTheHome</a>." >}}
+{{< figure src="/images/2021/12/Ampere-Altra-Processor-Complex.jpg" position="center" caption="Overview of Ampere Altra specs, courtesy of Patrick Kennedy at <a href=\"https://www.servethehome.com\">ServeTheHome</a>." >}}
 
 I've recently started playing around more with my Oracle Cloud account and decided to use Terraform to spin up a free ARM64 VM to compare its performance with one of my existing Raspberry Pi 4Bs.
 
@@ -214,7 +214,7 @@ As a small, low-power/embedded style device, the Raspberry Pi 4 carries the burd
 
 As discussed in [this DDR4 explainer](https://www.hardwaretimes.com/lpddr4-vs-ddr4-vs-lpddr4x-memory-whats-the-difference/) from HardwareTimes, LPDDR4 makes several key trade-offs for power consumption that result in greatly decreased memory bandwidth.  While the Pi 4's DRAM operates at the same 3200MT/s rate as the Altra, its performance is ultimately kneecapped by a single-channel memory implementation and LPDDR4's greatly reduced 32-bit bus width.
 
-{{< figure src="/images/2021/12/50120709591_4c50126bda_c.jpg" caption="The lone LPDDR4 package on the Raspberry Pi 4B.<br/>Photo by <a href=\"https://flic.kr/p/2jmZJMn\">Jeff Geerling</a>, licensed under <a href=\"https://creativecommons.org/licenses/by/2.0/\">CC BY 2.0</a>" >}}
+{{< figure src="/images/2021/12/50120709591_4c50126bda_c.jpg" position="center" caption="The lone LPDDR4 package on the Raspberry Pi 4B.<br/>Photo by <a href=\"https://flic.kr/p/2jmZJMn\">Jeff Geerling</a>, licensed under <a href=\"https://creativecommons.org/licenses/by/2.0/\">CC BY 2.0</a>" >}}
 
 Other factors like File I/O do show significant improvements from the Pi 4, but that seems to be due solely to the Pi 4's microSD card rather than some exceptional storage technology within the Oracle Cloud.  Keep in mind that 55MiB/s and 2-3k IOPS is lacking compared to even the lowest consumer-grade SATA 6Gb/s SSDs.  It is noteworthy nonetheless that Oracle is able to provide this level of performance in a free cloud server.  I fully expect that the Pi 4 would win in this category with a USB3 flash drive or SSD.
 
