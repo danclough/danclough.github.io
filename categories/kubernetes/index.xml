@@ -14,57 +14,57 @@ Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means 
 &lt;ol>
 &lt;li>Using &lt;code>kubectl&lt;/code>, drain and evict pods from the target node.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl drain &lt;span style="color:#e6db74">${&lt;/span>node&lt;span style="color:#e6db74">}&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl drain &lt;span style="color:#e6db74">${&lt;/span>node&lt;span style="color:#e6db74">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
 &lt;li>On the target node, use &lt;code>kubeadm&lt;/code> to remove the node from the cluster.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm reset
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubeadm reset
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
 &lt;li>Once &lt;code>kubeadm reset&lt;/code> is finished, stop Docker and finish cleaning up the node.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl stop docker
-rm -rf /etc/cni/net.d
-iptables --flush
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl stop docker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /etc/cni/net.d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>iptables --flush
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
 &lt;li>Uninstall the Docker CE suite and CLI.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get -y remove docker-ce*
-rm -rf /var/lib/docker/*
-rm -rf /var/lib/dockershim
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get -y remove docker-ce*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /var/lib/docker/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /var/lib/dockershim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
 &lt;li>Now&amp;rsquo;s a great time to update your kernel and OS packages&amp;hellip;&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get update
-apt-get -y dist-upgrade
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt-get -y dist-upgrade
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
 &lt;li>&amp;hellip;and reboot!&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">shutdown -r now
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing-containerd">Installing containerd&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>shutdown -r now
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing-containerd">Installing containerd&lt;/h3>
 &lt;p>(These steps are lifted straight from the fantastic &lt;a href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd">k8s containerd docs&lt;/a>!)&lt;/p>
 &lt;ol start="7">
 &lt;li>Apply the module configs for &lt;code>containerd&lt;/code>&amp;rsquo;s required kernel modules.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
-&lt;/span>&lt;span style="color:#e6db74">overlay
-&lt;/span>&lt;span style="color:#e6db74">br_netfilter
-&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
-sudo modprobe overlay
-sudo modprobe br_netfilter
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">overlay
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">br_netfilter
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo modprobe overlay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo modprobe br_netfilter
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
 &lt;li>Set sysctl tuning parameters for Kubernetes CRI&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
-&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
-&lt;/span>&lt;span style="color:#e6db74">net.ipv4.ip_forward = 1
-&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
-&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
-sysctl --system
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.ipv4.ip_forward = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sysctl --system
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
 &lt;li>Install &lt;code>containerd&lt;/code> if not already installed&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get install -y containerd.io
-&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get install -y containerd.io
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
 &lt;h5 id="a-note-on-filesystems">A note on filesystems&lt;/h5>
 &lt;p>Since these nodes were running Docker, all of the container data is stored in /var/lib/docker. With &lt;code>containerd&lt;/code>, container data is now stored in /var/lib/containerd. If you had the Docker data directory on its own filesystem, you&amp;rsquo;ll need to remove it and create one for &lt;code>containerd&lt;/code>. The exact steps depend in your system, so I won&amp;rsquo;t include them here.&lt;/p>
 &lt;h5 id="now-back-to-the-fun">Now back to the fun!&lt;/h5>
@@ -72,52 +72,52 @@ sysctl --system
 &lt;ol start="10">
 &lt;li>Generate a default configuration:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mkdir -p /etc/containerd
-containerd config default &amp;gt; /etc/containerd/config.toml
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="11">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkdir -p /etc/containerd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="11">
 &lt;li>Modify the &lt;code>config.toml&lt;/code> file generated above to enable the systemd cgroup driver:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-toml" data-lang="toml">[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>]
-...
-[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>.&lt;span style="color:#a6e22e">options&lt;/span>]
-&lt;span style="color:#a6e22e">SystemdCgroup&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="12">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> [&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>.&lt;span style="color:#a6e22e">options&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">SystemdCgroup&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="12">
 &lt;li>Now enable and start &lt;code>containerd&lt;/code>!&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl enable --now containerd
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="13">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable --now containerd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="13">
 &lt;li>Make sure &lt;code>containerd&lt;/code> is happy before proceeding.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl status containerd
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your system is now fully configured with the &lt;code>containerd&lt;/code> runtime - but before we rejoin the cluster, there&amp;rsquo;s one more step to get kubeadm to play nicely with it!&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl status containerd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your system is now fully configured with the &lt;code>containerd&lt;/code> runtime - but before we rejoin the cluster, there&amp;rsquo;s one more step to get kubeadm to play nicely with it!&lt;/p>
 &lt;h3 id="updating-the-kubelet-configuration">Updating the kubelet configuration&lt;/h3>
 &lt;p>Since this cluster was originally built with the Docker runtime, the default kubelet configuration does not explicitly set a cgroup driver. By default, kubeadm with Docker auto-detects the cgroup driver - but other runtimes like &lt;code>containerd&lt;/code> don&amp;rsquo;t support that yet. As a result, when you &lt;code>kubeadm join&lt;/code> a &lt;code>containerd&lt;/code> node without a cgroup driver specified, the kubelet won&amp;rsquo;t start. You can ninja-edit the &lt;code>/var/lib/kubelet/config.yaml&lt;/code> file when joining and then restart the kubelet, but that&amp;rsquo;s tedious and unnecessary.&lt;/p>
 &lt;p>Fortunately, we can update the baseline kubelet config at the cluster level to specify the right cgroup driver to use.&lt;/p>
 &lt;ol start="14">
 &lt;li>Edit the baseline kubelet config for your Kubernetes version - 1.18, 1.19, etc.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl edit cm -n kube-system kubelet-config-1.18
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="15">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl edit cm -n kube-system kubelet-config-1.18
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="15">
 &lt;li>Add the following entry for &lt;code>cgroupDriver&lt;/code>:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="color:#f92672">data&lt;/span>:
-&lt;span style="color:#f92672">kubelet&lt;/span>: |&lt;span style="color:#e6db74">
-&lt;/span>&lt;span style="color:#e6db74"> ...
-&lt;/span>&lt;span style="color:#e6db74"> cgroupDriver: systemd
-&lt;/span>&lt;span style="color:#e6db74"> ...&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="joining-the-cluster">Joining the cluster&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">data&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">kubelet&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> cgroupDriver: systemd
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> ...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="joining-the-cluster">Joining the cluster&lt;/h3>
 &lt;ol start="16">
 &lt;li>Proceed to &lt;code>kubeadm join&lt;/code> your node with the appropriate kubeadm command! You can run &lt;code>kubeadm token create --print-join-command&lt;/code> to create a new token.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm join 123.45.67.89:6443 &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --token &amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubeadm join 123.45.67.89:6443 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --token &amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
 &lt;h3 id="clean-up">Clean-up&lt;/h3>
 &lt;p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&amp;rsquo;re satisfied and the node shows &lt;code>Ready&lt;/code> in &lt;code>kubectl get nodes&lt;/code>, you can uncordon the node with &lt;code>kubectl uncordon&lt;/code>.&lt;/p>
 &lt;p>And finally, if necessary, don&amp;rsquo;t forget to re-taint your new control plane node! When &lt;code>kubeadm&lt;/code> rejoins the node, it applies the same default restriction to prevent control plane nodes from running worker pods. I find separate control planes unnecessary for my homelab, so I taint them to allow pods to run anywhere.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl taint nodes --all node-role.kubernetes.io/master-
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl taint nodes --all node-role.kubernetes.io/master-
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
 &lt;p>Now, granted - this process is &lt;em>extremely&lt;/em> unnecessary, and runs contrary to the cloud ethos that nodes should be treated like cattle. But for someone running a small bare-metal environment - where provisioning new nodes &lt;em>isn&amp;rsquo;t&lt;/em> entirely automated - these steps save a lot of time otherwise spent rebuilding VMs from the ground up, assigning IP addresses, updating DNS, and potentially building a whole new cluster.&lt;/p>
 &lt;p>And as an &lt;em>added&lt;/em> bonus, I now know more about Kubernetes and container runtimes than I did last week.&lt;/p></content></item></channel></rss>

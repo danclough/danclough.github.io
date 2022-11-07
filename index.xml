@@ -47,7 +47,7 @@ In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to t
 System: **********: GNU/Linux
 OS: GNU/Linux -- 5.11.0-1022-oracle -- #23~20.04.1-Ubuntu SMP Fri Nov 12 15:45:47 UTC 2021
 Machine: aarch64 (aarch64)
-Language: en_US.utf8 (charmap=&amp;quot;UTF-8&amp;quot;, collate=&amp;quot;UTF-8&amp;quot;)
+Language: en_US.utf8 (charmap=&amp;#34;UTF-8&amp;#34;, collate=&amp;#34;UTF-8&amp;#34;)
 18:42:15 up 2 min, 1 user, load average: 0.28, 0.27, 0.11; runlevel 2021-12-30
 ------------------------------------------------------------------------
 Benchmark Run: Thu Dec 30 2021 18:42:15 - 19:10:10
@@ -114,7 +114,7 @@ System Benchmarks Index Score 3641.0
 System: **********: GNU/Linux
 OS: GNU/Linux -- 5.4.0-1047-raspi -- #52-Ubuntu SMP PREEMPT Wed Nov 24 08:16:38 UTC 2021
 Machine: aarch64 (aarch64)
-Language: en_US.utf8 (charmap=&amp;quot;UTF-8&amp;quot;, collate=&amp;quot;UTF-8&amp;quot;)
+Language: en_US.utf8 (charmap=&amp;#34;UTF-8&amp;#34;, collate=&amp;#34;UTF-8&amp;#34;)
 11:40:13 up 3 days, 1:39, 1 user, load average: 1.57, 0.89, 0.74; runlevel 2021-09-07
 ------------------------------------------------------------------------
 Benchmark Run: Thu Dec 30 2021 15:42:07 - 16:10:28
@@ -239,7 +239,7 @@ System Benchmarks Index Score 730.7
 &lt;figcaption class="center" >The lone LPDDR4 package on the Raspberry Pi 4B.&lt;br/>Photo by &lt;a href="https://flic.kr/p/2jmZJMn">Jeff Geerling&lt;/a>, licensed under &lt;a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0&lt;/a>&lt;/figcaption>
 &lt;/figure>
 &lt;p>Other factors like File I/O do show significant improvements from the Pi 4, but that seems to be due solely to the Pi 4&amp;rsquo;s microSD card rather than some exceptional storage technology within the Oracle Cloud. Keep in mind that 55MiB/s and 2-3k IOPS is lacking compared to even the lowest consumer-grade SATA 6Gb/s SSDs. It is noteworthy nonetheless that Oracle is able to provide this level of performance in a free cloud server. I fully expect that the Pi 4 would win in this category with a USB3 flash drive or SSD.&lt;/p>
-&lt;p>All that being said, I went into this experiment fully expecting to see performance of the free Ampere VM roughly on-par with the Pi 4, at best. My suspicions were based on the anemic performance of other cloud providers' free tier compute instances - AWS&amp;rsquo;s t2.micro, Azure&amp;rsquo;s B1s burstable, and even Oracle&amp;rsquo;s existing AMD Epyc &amp;ldquo;micro&amp;rdquo; shape. The Ampere VMs in Oracle&amp;rsquo;s free tier are surprisingly capable and unlike any other free offering I&amp;rsquo;ve seen to date.&lt;/p></content></item><item><title>Implementing a Private CA for the Home Lab</title><link>/posts/implementing-a-private-ca-for-home-use/</link><pubDate>Sun, 31 Oct 2021 01:29:21 +0000</pubDate><guid>/posts/implementing-a-private-ca-for-home-use/</guid><description>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.
+&lt;p>All that being said, I went into this experiment fully expecting to see performance of the free Ampere VM roughly on-par with the Pi 4, at best. My suspicions were based on the anemic performance of other cloud providers&amp;rsquo; free tier compute instances - AWS&amp;rsquo;s t2.micro, Azure&amp;rsquo;s B1s burstable, and even Oracle&amp;rsquo;s existing AMD Epyc &amp;ldquo;micro&amp;rdquo; shape. The Ampere VMs in Oracle&amp;rsquo;s free tier are surprisingly capable and unlike any other free offering I&amp;rsquo;ve seen to date.&lt;/p></content></item><item><title>Implementing a Private CA for the Home Lab</title><link>/posts/implementing-a-private-ca-for-home-use/</link><pubDate>Sun, 31 Oct 2021 01:29:21 +0000</pubDate><guid>/posts/implementing-a-private-ca-for-home-use/</guid><description>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.
 As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic.</description><content>&lt;p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.&lt;/p>
 &lt;p>As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic. This of course allows for a variety of attack methods against locally-hosted services.&lt;/p>
 &lt;figure class="center" >
@@ -376,57 +376,57 @@ Oh no! Due to widespread confusion over what &amp;ldquo;Docker&amp;rdquo; means 
 &lt;ol>
 &lt;li>Using &lt;code>kubectl&lt;/code>, drain and evict pods from the target node.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl drain &lt;span style="color:#e6db74">${&lt;/span>node&lt;span style="color:#e6db74">}&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl drain &lt;span style="color:#e6db74">${&lt;/span>node&lt;span style="color:#e6db74">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
 &lt;li>On the target node, use &lt;code>kubeadm&lt;/code> to remove the node from the cluster.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm reset
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubeadm reset
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
 &lt;li>Once &lt;code>kubeadm reset&lt;/code> is finished, stop Docker and finish cleaning up the node.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl stop docker
-rm -rf /etc/cni/net.d
-iptables --flush
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl stop docker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /etc/cni/net.d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>iptables --flush
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
 &lt;li>Uninstall the Docker CE suite and CLI.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get -y remove docker-ce*
-rm -rf /var/lib/docker/*
-rm -rf /var/lib/dockershim
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get -y remove docker-ce*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /var/lib/docker/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /var/lib/dockershim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
 &lt;li>Now&amp;rsquo;s a great time to update your kernel and OS packages&amp;hellip;&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get update
-apt-get -y dist-upgrade
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get update
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>apt-get -y dist-upgrade
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
 &lt;li>&amp;hellip;and reboot!&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">shutdown -r now
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing-containerd">Installing containerd&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>shutdown -r now
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing-containerd">Installing containerd&lt;/h3>
 &lt;p>(These steps are lifted straight from the fantastic &lt;a href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd">k8s containerd docs&lt;/a>!)&lt;/p>
 &lt;ol start="7">
 &lt;li>Apply the module configs for &lt;code>containerd&lt;/code>&amp;rsquo;s required kernel modules.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
-&lt;/span>&lt;span style="color:#e6db74">overlay
-&lt;/span>&lt;span style="color:#e6db74">br_netfilter
-&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
-sudo modprobe overlay
-sudo modprobe br_netfilter
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">overlay
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">br_netfilter
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo modprobe overlay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo modprobe br_netfilter
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="8">
 &lt;li>Set sysctl tuning parameters for Kubernetes CRI&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
-&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
-&lt;/span>&lt;span style="color:#e6db74">net.ipv4.ip_forward = 1
-&lt;/span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
-&lt;/span>&lt;span style="color:#e6db74">EOF&lt;/span>
-sysctl --system
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat &lt;span style="color:#e6db74">&amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.ipv4.ip_forward = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sysctl --system
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="9">
 &lt;li>Install &lt;code>containerd&lt;/code> if not already installed&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt-get install -y containerd.io
-&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt-get install -y containerd.io
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
 &lt;h5 id="a-note-on-filesystems">A note on filesystems&lt;/h5>
 &lt;p>Since these nodes were running Docker, all of the container data is stored in /var/lib/docker. With &lt;code>containerd&lt;/code>, container data is now stored in /var/lib/containerd. If you had the Docker data directory on its own filesystem, you&amp;rsquo;ll need to remove it and create one for &lt;code>containerd&lt;/code>. The exact steps depend in your system, so I won&amp;rsquo;t include them here.&lt;/p>
 &lt;h5 id="now-back-to-the-fun">Now back to the fun!&lt;/h5>
@@ -434,53 +434,53 @@ sysctl --system
 &lt;ol start="10">
 &lt;li>Generate a default configuration:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mkdir -p /etc/containerd
-containerd config default &amp;gt; /etc/containerd/config.toml
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="11">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkdir -p /etc/containerd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="11">
 &lt;li>Modify the &lt;code>config.toml&lt;/code> file generated above to enable the systemd cgroup driver:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-toml" data-lang="toml">[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>]
-...
-[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>.&lt;span style="color:#a6e22e">options&lt;/span>]
-&lt;span style="color:#a6e22e">SystemdCgroup&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="12">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> [&lt;span style="color:#a6e22e">plugins&lt;/span>.&lt;span style="color:#e6db74">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.&lt;span style="color:#a6e22e">containerd&lt;/span>.&lt;span style="color:#a6e22e">runtimes&lt;/span>.&lt;span style="color:#a6e22e">runc&lt;/span>.&lt;span style="color:#a6e22e">options&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">SystemdCgroup&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="12">
 &lt;li>Now enable and start &lt;code>containerd&lt;/code>!&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl enable --now containerd
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="13">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl enable --now containerd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="13">
 &lt;li>Make sure &lt;code>containerd&lt;/code> is happy before proceeding.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">systemctl status containerd
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your system is now fully configured with the &lt;code>containerd&lt;/code> runtime - but before we rejoin the cluster, there&amp;rsquo;s one more step to get kubeadm to play nicely with it!&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl status containerd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your system is now fully configured with the &lt;code>containerd&lt;/code> runtime - but before we rejoin the cluster, there&amp;rsquo;s one more step to get kubeadm to play nicely with it!&lt;/p>
 &lt;h3 id="updating-the-kubelet-configuration">Updating the kubelet configuration&lt;/h3>
 &lt;p>Since this cluster was originally built with the Docker runtime, the default kubelet configuration does not explicitly set a cgroup driver. By default, kubeadm with Docker auto-detects the cgroup driver - but other runtimes like &lt;code>containerd&lt;/code> don&amp;rsquo;t support that yet. As a result, when you &lt;code>kubeadm join&lt;/code> a &lt;code>containerd&lt;/code> node without a cgroup driver specified, the kubelet won&amp;rsquo;t start. You can ninja-edit the &lt;code>/var/lib/kubelet/config.yaml&lt;/code> file when joining and then restart the kubelet, but that&amp;rsquo;s tedious and unnecessary.&lt;/p>
 &lt;p>Fortunately, we can update the baseline kubelet config at the cluster level to specify the right cgroup driver to use.&lt;/p>
 &lt;ol start="14">
 &lt;li>Edit the baseline kubelet config for your Kubernetes version - 1.18, 1.19, etc.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl edit cm -n kube-system kubelet-config-1.18
-&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="15">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl edit cm -n kube-system kubelet-config-1.18
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="15">
 &lt;li>Add the following entry for &lt;code>cgroupDriver&lt;/code>:&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="color:#f92672">data&lt;/span>:
-&lt;span style="color:#f92672">kubelet&lt;/span>: |&lt;span style="color:#e6db74">
-&lt;/span>&lt;span style="color:#e6db74"> ...
-&lt;/span>&lt;span style="color:#e6db74"> cgroupDriver: systemd
-&lt;/span>&lt;span style="color:#e6db74"> ...&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="joining-the-cluster">Joining the cluster&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">data&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">kubelet&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> cgroupDriver: systemd
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> ...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="joining-the-cluster">Joining the cluster&lt;/h3>
 &lt;ol start="16">
 &lt;li>Proceed to &lt;code>kubeadm join&lt;/code> your node with the appropriate kubeadm command! You can run &lt;code>kubeadm token create --print-join-command&lt;/code> to create a new token.&lt;/li>
 &lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubeadm join 123.45.67.89:6443 &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --token &amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
-&lt;/span>&lt;span style="color:#ae81ff">&lt;/span> &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubeadm join 123.45.67.89:6443 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --token &amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> --discovery-token-ca-cert-hash sha256:&amp;lt;...snip...&amp;gt; &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> &lt;span style="color:#f92672">[&lt;/span>--control-plane --certificate-key &amp;lt;...snip...&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>For control plane nodes, be sure to include the &lt;code>--control-plane&lt;/code> flag and &lt;code>--certificate-key&lt;/code> for your cluster - otherwise the node will join as a worker! I made this mistake and had to re-reset and rejoin the first node I converted. Use &lt;code>kubeadm init phase upload-certs --upload-certs&lt;/code> on another control plane node to reupload your certificates to the cluster, and then pass the provided certificate key to &lt;code>kubeadm join&lt;/code>.&lt;/p>
 &lt;h3 id="clean-up">Clean-up&lt;/h3>
 &lt;p>Once your new node is joined, wait a few minutes for your CNI plugin to reprovision the networking stack. Once you&amp;rsquo;re satisfied and the node shows &lt;code>Ready&lt;/code> in &lt;code>kubectl get nodes&lt;/code>, you can uncordon the node with &lt;code>kubectl uncordon&lt;/code>.&lt;/p>
 &lt;p>And finally, if necessary, don&amp;rsquo;t forget to re-taint your new control plane node! When &lt;code>kubeadm&lt;/code> rejoins the node, it applies the same default restriction to prevent control plane nodes from running worker pods. I find separate control planes unnecessary for my homelab, so I taint them to allow pods to run anywhere.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">kubectl taint nodes --all node-role.kubernetes.io/master-
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl taint nodes --all node-role.kubernetes.io/master-
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="final-thoughts">Final thoughts&lt;/h3>
 &lt;p>Now, granted - this process is &lt;em>extremely&lt;/em> unnecessary, and runs contrary to the cloud ethos that nodes should be treated like cattle. But for someone running a small bare-metal environment - where provisioning new nodes &lt;em>isn&amp;rsquo;t&lt;/em> entirely automated - these steps save a lot of time otherwise spent rebuilding VMs from the ground up, assigning IP addresses, updating DNS, and potentially building a whole new cluster.&lt;/p>
 &lt;p>And as an &lt;em>added&lt;/em> bonus, I now know more about Kubernetes and container runtimes than I did last week.&lt;/p></content></item><item><title>What's In My Lab</title><link>/posts/whats-in-my-lab/</link><pubDate>Sun, 04 Oct 2020 02:14:16 +0000</pubDate><guid>/posts/whats-in-my-lab/</guid><description>Like many people in IT, I&amp;rsquo;ve been running a home lab for several years. My home lab has become progressively more complicated over the years as I&amp;rsquo;ve layered in new technologies that I want to explore and added new services to my home network.
 Hardware My home lab runs mainly on low-power Dell OptiPlex ultra-small-form-factor (USFF) hardware. I wanted this lab to be always-on - so small, quiet, and energy-efficient hardware is a must-have.</description><content>&lt;p>Like many people in IT, I&amp;rsquo;ve been running a home lab for several years. My home lab has become progressively more complicated over the years as I&amp;rsquo;ve layered in new technologies that I want to explore and added new services to my home network.&lt;/p>
