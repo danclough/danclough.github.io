@@ -42,6 +42,11 @@ languages:
       - identifier: twitter
         name: Tweets
         url: https://twitter.com/dan_clough
+        weight: 3
+      - identifier: mastodon
+        name: Mastodon
+        pre: <a rel="me" href="https://infosec.exchange/@danclough"></a>
+        url: https://infosec.exchange/@danclough
         weight: 2
       - identifier: github
         name: Code
