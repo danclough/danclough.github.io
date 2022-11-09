@@ -1,6 +1,6 @@
 languageCode: "en-us"
 baseUrl: "/"
-#theme: "terminal"
+# theme: "terminal"
 paginate: 5
 googleAnalytics: "UA-23906734-2"
 
