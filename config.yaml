@@ -39,10 +39,6 @@ languages:
         name: About me
         url: /about
         weight: -8
-      - identifier: twitter
-        name: Tweets
-        url: https://twitter.com/dan_clough
-        weight: 3
       - identifier: mastodon
         name: Mastodon
         pre: <a rel="me" href="https://infosec.exchange/@danclough"></a>
