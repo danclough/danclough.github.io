@@ -12,7 +12,7 @@ params:
   fullWidthTheme: false
   centerTheme: true
   autoCover: true
-  favicon: "images/favicon.ico"
+  favicon: "/favicon.ico"
 
 languages:
   en:
