@@ -18,7 +18,7 @@ My home lab runs mainly on low-power Dell OptiPlex ultra-small-form-factor (USFF
 
 For several years, I ran VMware ESXi mostly as a learning opportunity.  Over time I found that the overhead of running ESXi on low-spec commodity hardware was too great, and decided to shift my workloads over to [Proxmox VE](https://www.proxmox.com/).
 
-{{< figure src="/images/2021/05/infra_services.png" position="center" >}}
+{{< figure src="/images/2020/10/infra_services.png" position="center" >}}
 
 ### Services
 
