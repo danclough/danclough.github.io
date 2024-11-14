@@ -25,7 +25,7 @@ I also have two vintage systems from SGI and Sun which I occasionally power on a
 |SuperMicro CSE-826|Dual Intel Xeon E5-2630v4|64GB DDR4|
 |reServer i31115|Intel Core i3 1115G4|32GB DDR4|
 |Raspberry Pi 5|ARM Cortex-A76 2.4GHz|8GB LPDDR4X|
-|Sun Fire V100|550MHz UltraSPARC IIi|1GB PC133|
+|Sun Netra X1|400MHz UltraSPARC IIe|1GB PC133|
 |Cobalt "RaQFive"|StarFive JH7110 SoC 1.5GHz|8GB DDR LPDDR4|
 |SGI O2|MIPS R5000 180MHz|1GB 133MHz SDRAM|
 
