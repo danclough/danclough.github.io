@@ -1,11 +1,9 @@
 +++
-date = 2020-08-30T12:43:52Z
-description = ""
-draft = false
-cover = "images/2020/08/stef-westheim-ZGH6xd3usAs-unsplash.jpg"
-slug = "designing-a-homelab"
+date = 2020-08-30
 title = "Designing a Homelab"
-
+slug = "designing-a-homelab"
+cover = "images/2020/08/stef-westheim-ZGH6xd3usAs-unsplash.jpg"
+tags = ["homelab"]
 +++
 
 

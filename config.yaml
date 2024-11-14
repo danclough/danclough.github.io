@@ -13,6 +13,7 @@ params:
   centerTheme: true
   autoCover: true
   favicon: "/favicon.ico"
+  readingTime: true
 
 languages:
   en:
@@ -26,6 +27,7 @@ languages:
     missingContentMessage: "Page not found"
     missingBackButtonLabel: "Back to home page"
     params:
+      reading_speed: 180
       logo:
         logoText: Buffer Overflow
         logoHomeLink: /
@@ -39,6 +41,14 @@ languages:
         name: About me
         url: /about
         weight: -8
+      - identifier: notes
+        name: Notes
+        url: /notes
+        weight: -7
+      - identifier: blog
+        name: Blog
+        url: /posts
+        weight: -6
       - identifier: mastodon
         name: Mastodon
         pre: <a rel="me" href="https://infosec.exchange/@danclough"></a>
@@ -57,3 +67,7 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+  tableOfContents:
+    endLevel: 4
+    ordered: false
+    startLevel: 2

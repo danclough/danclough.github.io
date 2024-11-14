@@ -1,11 +1,10 @@
 +++
-date = 2023-08-16T09:31:00Z
-description = ""
-draft = false
-cover = "images/2023/08/pexels-brett-sayles-4597280.jpg"
-slug = "hyperconvergence-ceph-proxmox-homelab"
+date = 2023-08-16
 title = "The (Hyper)Convergence - Ceph + Proxmox"
-
+description = ""
+slug = "hyperconvergence-ceph-proxmox-homelab"
+cover = "images/2023/08/pexels-brett-sayles-4597280.jpg"
+tags = ["ceph","homelab","proxmox"]
 +++
 
 When I kicked off the latest iteration of my homelab project about 10 years ago, everything was harder.  Shared storage was a luxury that meant diving into expensive SAN solutions which were neither feasible nor affordable for anyone not running a data center.  Containers were still in buzzword territory, and their real-world application was confined either to early versions of Docker (pre-OCI, mind you!), or to cutting-edge cloud-native projects like Google's Borg.

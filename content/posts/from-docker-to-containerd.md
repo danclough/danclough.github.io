@@ -1,13 +1,9 @@
 +++
-categories = ["kubernetes", "docker", "homelab"]
-date = 2020-12-04T18:45:04Z
-description = ""
-draft = false
-cover = "images/2020/12/teng-yuhong-qMehmIyaXvY-unsplash.jpg"
-slug = "from-docker-to-containerd"
-tags = ["kubernetes", "docker", "homelab"]
+date = 2020-12-04
 title = "Migrating Kubernetes from Docker to containerd"
-
+slug = "from-docker-to-containerd"
+cover = "images/2020/12/teng-yuhong-qMehmIyaXvY-unsplash.jpg"
+tags = ["docker","homelab","kubernetes"]
 +++
 
 

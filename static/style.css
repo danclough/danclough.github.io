@@ -14,3 +14,15 @@ code {
 .container {
     max-width: 920px;
 }
+
+.breadcrumb ol {
+  padding-left: 0;
+}
+
+.breadcrumb li {
+  display: inline;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: "»";
+}

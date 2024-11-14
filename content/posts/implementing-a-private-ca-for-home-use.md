@@ -1,10 +1,9 @@
 +++
-date = 2021-10-31T01:29:21Z
-description = ""
-draft = false
-slug = "implementing-a-private-ca-for-home-use"
+date = 2021-10-31
 title = "Implementing a Private CA for the Home Lab"
-
+description = ""
+slug = "implementing-a-private-ca-for-home-use"
+tags = ["homelab","pki","security"]
 +++
 
 

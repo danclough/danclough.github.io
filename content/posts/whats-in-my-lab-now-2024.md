@@ -1,11 +1,9 @@
 +++
-date = 2024-04-03T18:51:00Z
-description = ""
-draft = false
-cover = "images/2024/04/rack.png"
-slug = "whats-in-my-lab-now-2024"
+date = 2024-04-03
 title = "What's In My Lab Now, 2024 Edition"
-
+slug = "whats-in-my-lab-now-2024"
+cover = "images/2024/04/rack.png"
+tags = ["homelab"]
 +++
 
 Almost four years ago (agh!) I published [What's In My Lab]({{< ref "/posts/whats-in-my-lab" >}}), an overview of the systems and software I use at home for my own personal infrastructure.  You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated.  Hah!  Guess again.

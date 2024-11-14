@@ -1,10 +1,9 @@
 +++
-date = 2021-01-19T14:33:00Z
-description = ""
-draft = false
-slug = "kubernetes-at-home"
+date = 2021-01-19
 title = "Kubernetes @ Home"
-
+description = ""
+slug = "kubernetes-at-home"
+tags = ["homelab","kubernetes"]
 +++
 
 

@@ -1,11 +1,10 @@
 +++
-date = 2020-08-23T18:04:03Z
-description = ""
-draft = false
-cover = "images/2020/08/kevin-ku-w7ZyuGYNpRQ-unsplash.jpg"
-slug = "importance-of-homelabs"
+date = 2020-08-23
 title = "The Importance of Homelabs"
-
+description = ""
+slug = "importance-of-homelabs"
+cover = "images/2020/08/kevin-ku-w7ZyuGYNpRQ-unsplash.jpg"
+tags = ["homelab"]
 +++
 
 

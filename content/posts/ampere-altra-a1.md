@@ -1,13 +1,10 @@
 +++
-date = 2021-12-31T14:34:28Z
-description = ""
-draft = false
-cover = "images/2021/12/jainath-ponnala-BIHgNEaM394-unsplash.jpg"
-slug = "ampere-altra-a1"
+date = 2021-12-31
 title = "Ampere Altra vs Raspberry Pi 4"
-
+slug = "ampere-altra-a1"
+cover = "images/2021/12/jainath-ponnala-BIHgNEaM394-unsplash.jpg"
+tags = ["arm","cloud","raspberrypi"]
 +++
-
 
 In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments.  Patrick Kennedy of ServeTheHome covered the release with an [excellent in-depth article](https://www.servethehome.com/ampere-altra-80-arm-cores-for-cloud/) last year which I highly recommend reading.
 

@@ -1,10 +1,8 @@
 +++
-date = 2020-10-04T02:14:16Z
-description = ""
-draft = false
-slug = "whats-in-my-lab"
+date = 2020-10-04
 title = "What's In My Lab"
-
+slug = "whats-in-my-lab"
+tags = ["homelab"]
 +++
 
 

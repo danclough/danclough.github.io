@@ -1,14 +1,10 @@
 +++
-date = 2021-10-21T00:18:34Z
-description = ""
-draft = false
-cover = "images/2021/10/kevin-ku-w7ZyuGYNpRQ-unsplash.jpg"
-slug = "case-for-homelab-security"
+date = 2021-10-21
 title = "The Case for Home Lab Security"
-
+slug = "case-for-homelab-security"
+cover = "images/2021/10/kevin-ku-w7ZyuGYNpRQ-unsplash.jpg"
+tags = ["homelab","security"]
 +++
-
-
 Perhaps unsurprisingly, as my home lab and local area network have matured over the years, both I and my family have come to depend on the assortment of services that I run within the four walls of my home.  We begin to take things for granted.
 
 For instance, we put all of our important files - recipes, documents, photos, home videos, etc. - on "the server".  The contents of said server are invaluable to us, economically and emotionally.  I take very specific steps to ensure the safety of our data, including ZFS volume-level encryption and frequent encrypted backups to an off-site backup provider.  (Shoutout to [Backblaze B2](https://www.backblaze.com/b2/cloud-storage.html)!)
