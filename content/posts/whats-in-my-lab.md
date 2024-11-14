@@ -5,9 +5,8 @@ slug = "whats-in-my-lab"
 tags = ["homelab"]
 +++
 
-
 Like many people in IT, I've been running a home lab for several years.  My home lab has become progressively more complicated over the years as I've layered in new technologies that I want to explore and added new services to my home network.
-
+<!--more-->
 ### Hardware
 
 My home lab runs mainly on low-power Dell OptiPlex ultra-small-form-factor (USFF) hardware.  I wanted this lab to be always-on - so small, quiet, and energy-efficient hardware is a must-have.  The notable exception is my NAS, a 2U Dell PowerEdge rackmount server with an array of 3.5" SAS spinning disks striped in a large ZFS RAID-Z2 pool.

@@ -6,13 +6,11 @@ cover = "images/2020/12/teng-yuhong-qMehmIyaXvY-unsplash.jpg"
 tags = ["docker","homelab","kubernetes"]
 +++
 
-
 On December 2nd, a [surprise announcement](https://kubernetes.io/blog/2020/12/02/dont-panic-kubernetes-and-docker/) made waves in the Kubernetes Twitter-sphere - that after the upcoming 1.20 release, Docker would be officially deprecated.
-
 ### Oh no!
-Due to widespread confusion over what "Docker" means in specific contexts, many people panicked - myself included.  Because of its sheer popularity, Docker has become synonymous with "containers".  However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images.  The only thing Kubernetes is deprecating is using Docker as a container runtime, and the reasoning is sound.
-
-Docker's lack of support for the "Container Runtime Interface" API - or CRI, for short - forced Kubernetes to implement an abstraction layer called "dockershim" to allow Kubernetes to manage containers in Docker.  The burden of maintaining dockershim was too great to bear, so they are deprecating dockershim in release 1.20, and will eventually remove it entirely in 1.22.
+Due to widespread confusion over what "Docker" means in specific contexts, many people panicked - myself included.  Due to its popularity and ease of use, the Docker engine has become synonymous with "containers".  However, Docker is really an entire ecosystem of container tools and processes, including building and shipping container images.  So what does this announcement mean, and what are the implications for everyone using it?  
+<!--more-->
+The only thing Kubernetes is deprecating is using Docker as a container runtime, and the reasoning is sound.  Docker's lack of support for the "Container Runtime Interface" API - or CRI, for short - forced Kubernetes to implement an abstraction layer called "dockershim" to allow Kubernetes to manage containers in Docker.  The burden of maintaining dockershim was too great to bear, so they are deprecating dockershim in release 1.20, and will eventually remove it entirely in 1.22.
 
 There are two other container runtimes featured in the Kubernetes quickstart guide as an alternative to Docker - `containerd` and CRI-O.  `containerd` is  the same runtime that Docker itself uses internally, just without the fancy Docker wrapping paper and tools.
 

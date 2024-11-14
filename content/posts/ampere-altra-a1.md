@@ -8,11 +8,9 @@ tags = ["arm","cloud","raspberrypi"]
 
 In early 2020, recent semiconductor startup Ampere announced the Altra, an ultra-dense 80-core ARM64 CPU targeted at cloud computing environments.  Patrick Kennedy of ServeTheHome covered the release with an [excellent in-depth article](https://www.servethehome.com/ampere-altra-80-arm-cores-for-cloud/) last year which I highly recommend reading.
 
-In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup.  And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their "Always Free" tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.
-
+In mid-2020, Oracle became the first cloud provider to add the Ampere Altra to their cloud computing lineup.  And in early 2021, Oracle took the unusual step of adding the Altra A1 VMs to their "Always Free" tier, allowing anyone to create ARM64 VMs with up to 4 cores and 24GB of RAM at no cost.  I've recently started playing around more with my Oracle Cloud account, and decided to use Terraform to spin up a free ARM64 VM to compare its performance with one of my existing Raspberry Pi 4Bs.
+<!--more-->
 {{< figure src="/images/2021/12/Ampere-Altra-Processor-Complex.jpg" position="center" caption="Overview of Ampere Altra specs, courtesy of Patrick Kennedy at <a href=\"https://www.servethehome.com\">ServeTheHome</a>." >}}
-
-I've recently started playing around more with my Oracle Cloud account and decided to use Terraform to spin up a free ARM64 VM to compare its performance with one of my existing Raspberry Pi 4Bs.
 
 ## Specifications
 Oracle allows "Always Free" tier users to create flexible instance sizes from a total resource pool of 4 "OCPUs" and an astonishing **24GB** of RAM.  To make the test as fair as possible, I created an instance with 4 OCPUs and 8GB of RAM to match the 8GB RPi 4 that I tested locally.

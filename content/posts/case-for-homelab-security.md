@@ -5,8 +5,9 @@ slug = "case-for-homelab-security"
 cover = "images/2021/10/kevin-ku-w7ZyuGYNpRQ-unsplash.jpg"
 tags = ["homelab","security"]
 +++
-Perhaps unsurprisingly, as my home lab and local area network have matured over the years, both I and my family have come to depend on the assortment of services that I run within the four walls of my home.  We begin to take things for granted.
 
+Perhaps unsurprisingly, as my home lab and local area network have matured over the years, both I and my family have come to depend on the assortment of services that I run strictly within the four walls of our home.  Knowing that our data is *physically* secure, we often tend to take other forms of security for granted.
+<!--more-->
 For instance, we put all of our important files - recipes, documents, photos, home videos, etc. - on "the server".  The contents of said server are invaluable to us, economically and emotionally.  I take very specific steps to ensure the safety of our data, including ZFS volume-level encryption and frequent encrypted backups to an off-site backup provider.  (Shoutout to [Backblaze B2](https://www.backblaze.com/b2/cloud-storage.html)!)
 
 Having reliable, 24x7 access to all of my family's data is one hell of an accomplishment, but it's not enough any more.  I've seen too many software vulnerabilities in my still-young IT career to be able to blindly trust any single layer of application security.  For the same reasons that my data needs to remain safe and accessible, I also need to keep it secure from prying eyes and malicious actors.
@@ -28,5 +29,5 @@ That being said, here are the steps I'm taking to secure my home lab:
 2. Secure all TLS-capable services on my local network with certificates from the internal PKI, and
 3. Setup auto-renewal to allow short certificate lifespans (days to weeks) without manual intervention or rotation.
 
-I fully intend for this blog to be a place for learning and sharing my experiences, so in a coming post I'll attempt to document every step of the process and write about a few of the hurdles I had to overcome.  I'll also share my thoughts on a few **** of the fantastic open-source products that I tried out along the way.
+I fully intend for this blog to be a place for learning and sharing my experiences, so in a coming post I'll attempt to document every step of the process and write about a few of the hurdles I had to overcome.  I'll also share my thoughts on a few of the fantastic open-source products that I tried out along the way.
 

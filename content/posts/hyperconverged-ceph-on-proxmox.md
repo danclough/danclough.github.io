@@ -8,7 +8,7 @@ tags = ["ceph","homelab","proxmox"]
 +++
 
 When I kicked off the latest iteration of my homelab project about 10 years ago, everything was harder.  Shared storage was a luxury that meant diving into expensive SAN solutions which were neither feasible nor affordable for anyone not running a data center.  Containers were still in buzzword territory, and their real-world application was confined either to early versions of Docker (pre-OCI, mind you!), or to cutting-edge cloud-native projects like Google's Borg.
-
+<!--more-->
 At that time, virtualization was the future and VMware was the name in the game.  In my workplace, vSphere was so deeply entrenched in our infrastructure that it felt almost absurd to think about running anything else for my homelab.  VMware’s reliability, integrations, and comprehensive feature set made it an obvious choice for enterprises.  For a home lab, though, it wasn’t just about running VMs - it was about learning the ropes of managing real enterprise-grade infrastructure.  Thanks to generous licensing through the VMware Users Group, I ran VMware in my home lab for several years before the growing overhead of the vSphere stack pushed me to look for something else.  Perhaps the most painful part of trying to run VMware at home was the lack of reliable shared storage.
 
 Here's a list of all the solutions I tried:

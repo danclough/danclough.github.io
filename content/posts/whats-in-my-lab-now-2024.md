@@ -7,7 +7,7 @@ tags = ["homelab"]
 +++
 
 Almost four years ago (agh!) I published [What's In My Lab]({{< ref "/posts/whats-in-my-lab" >}}), an overview of the systems and software I use at home for my own personal infrastructure.  You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated.  Hah!  Guess again.
-
+<!--more-->
 ### Hardware
 I've continued with the trend of using low-power off-the-shelf systems.  The beauty of a product line like Dell's OptiPlex Micro is that the design is essentially unchanging from one generation to the next.  Where I used to have a range of models - 7040, 5050, etc. - I've slowly upgraded them all to the same generation of 3060s.  One extra feature I've added that you won't find on a stock OptiPlex Micro is a [secondary NIC from DFRobot](https://www.dfrobot.com/product-2318.html) connected to the WiFi M.2 slot, giving each Micro an extra 1GbE port for redundancy or a dedicated storage network.
 

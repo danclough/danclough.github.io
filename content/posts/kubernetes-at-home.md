@@ -8,9 +8,8 @@ tags = ["homelab","kubernetes"]
 
 
 Now that I've shared some of my physical infrastructure in my home lab, I want to share the service topology for the specific services I run at home for home automation, secure storage, and even this website.
-
 {{< figure src="/images/2021/05/service-topology-1.png" position="center" >}}
-
+<!--more-->
 ## Services
 
 As you can see, a number of the specific services I run are focused around infrastructure and system management.  Services such as Grafana and Kibana are essential for monitoring and observability for my entire home lab environment.  A few of the other services not pictured, for brevity:

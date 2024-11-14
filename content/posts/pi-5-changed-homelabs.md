@@ -7,7 +7,9 @@ slug = "pi-5-nvme-killer-feature"
 tags = ["homelab","raspberrypi"]
 +++
 
-Running a Kubernetes cluster on a few Raspberry Pi 4s has been a rewarding but challenging experience.  The biggest limitation was storage - each Pi was booting from an SD card, which, while convenient, proved to be a massive bottleneck.  SD cards are not only slow, but also wear out quickly under constant read/write operations.  Over time, I experienced several cases of data corruption which brought that cluster to its knees.  In fact, I've got almost 1TB worth of dead (or dying) MicroSD cards in a bench drawer from my endless sacrifices to the Non-Volatile Memory Gods.  Constant awareness of this flaw from the resulting expensive heap of silicon pictured below made it very hard to me to trust that cluster for anything beyond experimentation.
+Running a Kubernetes cluster on a few Raspberry Pi 4s has been a rewarding but challenging experience.  The biggest limitation was storage - each Pi was booting from an SD card, which, while convenient, proved to be a massive bottleneck.  SD cards are not only slow, but also wear out quickly under constant read/write operations.  Over time, I experienced several cases of data corruption which brought that cluster to its knees.
+<!--more-->
+In fact, I've got almost 1TB worth of dead (or dying) MicroSD cards in a bench drawer from my endless sacrifices to the Non-Volatile Memory Gods.  Constant awareness of this flaw from the resulting expensive heap of silicon pictured below made it very hard to me to trust that cluster for anything beyond experimentation.
 
 {{< figure src="/images/2024/02/sdcards.png" position="center" >}}
 
