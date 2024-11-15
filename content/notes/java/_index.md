@@ -2,8 +2,6 @@
 title = "Java Notes"
 slug = "java"
 +++
-{{% bc %}}
-
 # Table of Contents
 {{% toc %}}
 

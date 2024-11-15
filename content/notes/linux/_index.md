@@ -2,7 +2,6 @@
 title = "Linux Notes"
 slug = "linux"
 +++
-{{% bc %}}
 # Table of Contents
 {{% toc %}}
 
