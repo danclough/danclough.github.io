@@ -8,5 +8,5 @@ title = "Technical Notes"
 A collection of notes, findings, and one-liners that have proven useful to me.
 
 ## Sections
-[Java]({{< relref "java" >}})
-[Linux]({{< relref "linux" >}})
+* [Java]({{< relref "java" >}})
+* [Linux]({{< relref "linux" >}})
