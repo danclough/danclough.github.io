@@ -19,18 +19,18 @@ languages:
   en:
     languageName: "English"
     title: "Buffer Overflow"
-    subtitle: "A blog for my tech experiments and experiences"
-    copyright: "All original content licensed under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> unless noted otherwise."
-    menuMore: "File"
-    readMore: "Read more"
-    readOtherPosts: "Read other posts"
-    missingContentMessage: "Page not found"
-    missingBackButtonLabel: "Back to home page"
     params:
+      subtitle: "A blog for my tech experiments and experiences"
+      copyright: "All original content licensed under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/legalcode\">CC BY-SA 4.0</a> unless noted otherwise."
+      menuMore: "File"
+      readMore: "Read more"
+      readOtherPosts: "Read other posts"
+      missingContentMessage: "Page not found"
+      missingBackButtonLabel: "Back to home page"
       reading_speed: 180
       logo:
-        logoText: Buffer Overflow
-        logoHomeLink: /
+          logoText: Buffer Overflow
+          logoHomeLink: /
     menu:
       main:
       - identifier: home
