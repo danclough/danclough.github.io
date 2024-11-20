@@ -1,0 +1,8 @@
+<ul class="toc">
+{{- range .Pages.ByTitle -}}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- if .Pages -}}
+        {{- partial "walk_section.html" . -}}
+    {{- end -}}
+{{- end -}}
+</ul>

@@ -1,0 +1,12 @@
+<h3>Table of Contents</h3>
+<ul class="toc">
+{{- range .Page.Pages.ByTitle -}}
+    {{- if .Pages -}}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- partial "walk_section.html" . -}}
+    {{- end -}}
+{{- end -}}
+{{- range .Page.Pages.ByTitle -}}
+    {{ if not .Pages }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+{{- end -}}
+</ul>

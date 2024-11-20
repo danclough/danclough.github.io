@@ -1,1 +1,7 @@
-<div class="breadcrumbs">/{{- range after 1 .Page.Ancestors.Reverse -}}<a href="{{ .RelPermalink }}">{{- .Slug }}</a>/{{- end -}}<a href="{{ .Page.RelPermalink }}">{{ .Page.Slug }}</a></div>
+<div class="breadcrumbs">/
+{{- range after 1 .Page.Ancestors.Reverse -}}
+    <a href="{{ .RelPermalink }}">{{- default (lower .Name) .Slug }}</a>/
+{{- end -}}
+{{- if .IsNode -}}
+    <a href="{{ .Page.RelPermalink }}">{{ default (lower .Name) .Slug }}</a></div>
+{{- end -}}

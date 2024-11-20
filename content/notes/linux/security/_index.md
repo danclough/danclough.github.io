@@ -1,4 +1,4 @@
 +++
-title = "Linux"
+title = "Security"
 +++
 {{% section_toc %}}
