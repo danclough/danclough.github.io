@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Security on Buffer Overflow</title><link>/notes/linux/security/</link><description>Recent content in Security on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>All original content licensed under &lt;a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0&lt;/a> unless noted otherwise.</copyright><atom:link href="/notes/linux/security/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding certificates to the trusted CAs</title><link>/notes/linux/security/adding_certs_to_os/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/notes/linux/security/adding_certs_to_os/</guid><description>&lt;h4 id="adding-certificates-to-the-trusted-cas">Adding certificates to the trusted CAs&lt;/h4>
+&lt;p>Different Linux distributions have their own ways and locations of storing trusted CAs and self-signed certificates. Table below for quick reference.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>Distribution&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Import location&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Update utility&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Debian&lt;br> Ubuntu&lt;br> Raspberry Pi OS&lt;br> Kali Linux&lt;/td>
+&lt;td>&lt;code>/usr/local/share/ca-certificates&lt;/code>&lt;/td>
+&lt;td>&lt;code>update-ca-certificates&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RHEL&lt;br> Fedora&lt;br> Amazon Linux&lt;br> AlmaLinux&lt;br> CentOS&lt;br> Rocky Linux&lt;/td>
+&lt;td>&lt;code>/etc/pki/ca-trust/source/anchors&lt;/code>&lt;/td>
+&lt;td>&lt;code>update-ca-trust&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Arch Linux&lt;/td>
+&lt;td>&lt;code>/etc/ca-certificates/trust-source/anchors&lt;/code>&lt;/td>
+&lt;td>&lt;code>trust anchor --store &amp;lt;cert file&amp;gt;&lt;/code> or &lt;code>update-ca-trust&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr></description><content>&lt;h4 id="adding-certificates-to-the-trusted-cas">Adding certificates to the trusted CAs&lt;/h4>
+&lt;p>Different Linux distributions have their own ways and locations of storing trusted CAs and self-signed certificates. Table below for quick reference.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>Distribution&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Import location&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Update utility&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Debian&lt;br> Ubuntu&lt;br> Raspberry Pi OS&lt;br> Kali Linux&lt;/td>
+&lt;td>&lt;code>/usr/local/share/ca-certificates&lt;/code>&lt;/td>
+&lt;td>&lt;code>update-ca-certificates&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>RHEL&lt;br> Fedora&lt;br> Amazon Linux&lt;br> AlmaLinux&lt;br> CentOS&lt;br> Rocky Linux&lt;/td>
+&lt;td>&lt;code>/etc/pki/ca-trust/source/anchors&lt;/code>&lt;/td>
+&lt;td>&lt;code>update-ca-trust&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Arch Linux&lt;/td>
+&lt;td>&lt;code>/etc/ca-certificates/trust-source/anchors&lt;/code>&lt;/td>
+&lt;td>&lt;code>trust anchor --store &amp;lt;cert file&amp;gt;&lt;/code> or &lt;code>update-ca-trust&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr></content></item><item><title>Troubleshooting SSL or TLS Certificates</title><link>/notes/linux/security/troubleshooting_certs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/notes/linux/security/troubleshooting_certs/</guid><description>&lt;h5 id="checking-local-certificates">Checking local certificates&lt;/h5>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## Issued and expiration dates&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -dates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## SANs or other extentions&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -ext subjectAltName &lt;span style="color:#75715e"># Shows all domains listed on the certificate&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -ext basicConstraints,keyUsage &lt;span style="color:#75715e"># Handy for checking CAs&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## Full details&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -text
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="checking-certificates-installed-on-a-server">Checking certificates installed on a server&lt;/h5>
+&lt;h6 id="prerequisite---set-hostname-and-port-variables">PREREQUISITE - Set hostname and port variables&lt;/h6>
+&lt;p>Set HOST equal to the hostname you want to check the certificate for.&lt;/p></description><content>&lt;h5 id="checking-local-certificates">Checking local certificates&lt;/h5>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## Issued and expiration dates&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -dates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## SANs or other extentions&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -ext subjectAltName &lt;span style="color:#75715e"># Shows all domains listed on the certificate&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -ext basicConstraints,keyUsage &lt;span style="color:#75715e"># Handy for checking CAs&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## Full details&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openssl x509 -in cert.pem -noout -text
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="checking-certificates-installed-on-a-server">Checking certificates installed on a server&lt;/h5>
+&lt;h6 id="prerequisite---set-hostname-and-port-variables">PREREQUISITE - Set hostname and port variables&lt;/h6>
+&lt;p>Set HOST equal to the hostname you want to check the certificate for.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>HOST&lt;span style="color:#f92672">=&lt;/span>my.hostname.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># SOCKET=my.hostname.com:443 # This is the hostname and port (or an IP address/port)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you want to check against a server other than what the DNS address resolves to, define the SOCKET variable as well. If you don&amp;rsquo;t set it, my snippets below will just assume it&amp;rsquo;s the same as $HOST and port 443.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">###### Basic connection and negotiation details - protocol, ciphersuite, hash, and key strength&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> -brief
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">###### Certificate chain&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> 2&amp;gt;/dev/null
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">###### Issued and expiration dates&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> 2&amp;gt;/dev/null | openssl x509 -noout -dates
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">###### SANs or other extensions&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> 2&amp;gt;/dev/null | openssl x509 -noout -ext subjectAltName
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> 2&amp;gt;/dev/null | openssl x509 -noout -ext basicConstraints,keyUsage
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">###### Full details of the host certificate&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo | openssl s_client -servername $HOST -connect &lt;span style="color:#e6db74">${&lt;/span>SOCKET&lt;span style="color:#66d9ef">:-&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$HOST&lt;span style="color:#e6db74">:443&amp;#34;&lt;/span>&lt;span style="color:#e6db74">}&lt;/span> 2&amp;gt;/dev/null | openssl x509 -text -noout
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></content></item></channel></rss>
