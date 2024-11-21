@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ceph on Buffer Overflow</title><link>/notes/linux/storage/ceph/</link><description>Recent content in Ceph on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="/notes/linux/storage/ceph/index.xml" rel="self" type="application/rss+xml"/><item><title>Repairing Inconsistent Ceph PGs</title><link>/notes/linux/storage/ceph/repair_ceph_pgs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/notes/linux/storage/ceph/repair_ceph_pgs/</guid><description>&lt;p>My hyperconverged Ceph cluster was reporting an inconsistent placement group on one of my OSDs. Proxmox doesn&amp;rsquo;t provide any method in the UI to repair these, so I had to SSH into the node and run a repair using the Ceph CLI.&lt;/p>
+&lt;ol>
+&lt;li>Check for inconsistent placement groups (PGs):&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph pg dump pgs | grep &lt;span style="color:#e6db74">&amp;#34;inconsistent&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>The first column of the output lists the PGID (e.g. &lt;code>13.d&lt;/code>). The first part (&lt;code>13&lt;/code>) is the ID of the pool. You can see all the pools by ID and name with:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph osd pool ls detail | awk &lt;span style="color:#e6db74">&amp;#39;{print $2, $3}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>You may get more info on the exact objects affected with these commands, where &lt;code>&amp;lt;pool_name&amp;gt;&lt;/code> and &lt;code>&amp;lt;pgid&amp;gt;&lt;/code> are from the outputs above.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>rados list-inconsistent-pg &amp;lt;pool_name&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rados list-inconsistent-obj &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rados list-inconsistent-snapset &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Start a repair on the errored PGs with:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph pg repair &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description><content>&lt;p>My hyperconverged Ceph cluster was reporting an inconsistent placement group on one of my OSDs. Proxmox doesn&amp;rsquo;t provide any method in the UI to repair these, so I had to SSH into the node and run a repair using the Ceph CLI.&lt;/p>
+&lt;ol>
+&lt;li>Check for inconsistent placement groups (PGs):&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph pg dump pgs | grep &lt;span style="color:#e6db74">&amp;#34;inconsistent&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>The first column of the output lists the PGID (e.g. &lt;code>13.d&lt;/code>). The first part (&lt;code>13&lt;/code>) is the ID of the pool. You can see all the pools by ID and name with:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph osd pool ls detail | awk &lt;span style="color:#e6db74">&amp;#39;{print $2, $3}&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>You may get more info on the exact objects affected with these commands, where &lt;code>&amp;lt;pool_name&amp;gt;&lt;/code> and &lt;code>&amp;lt;pgid&amp;gt;&lt;/code> are from the outputs above.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>rados list-inconsistent-pg &amp;lt;pool_name&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rados list-inconsistent-obj &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rados list-inconsistent-snapset &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Start a repair on the errored PGs with:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ceph pg repair &amp;lt;pgid&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></content></item></channel></rss>
