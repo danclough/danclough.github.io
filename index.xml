@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Buffer Overflow</title><link>/</link><description>Recent content on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 03 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>What's In My Lab Now, 2024 Edition</title><link>/posts/whats-in-my-lab-now-2024/</link><pubDate>Wed, 03 Apr 2024 00:00:00 +0000</pubDate><guid>/posts/whats-in-my-lab-now-2024/</guid><description>&lt;p>Almost four years ago (agh!) I published &lt;a href="/posts/whats-in-my-lab/">What&amp;rsquo;s In My Lab&lt;/a>, an overview of the systems and software I use at home for my own personal infrastructure. You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated. Hah! Guess again.&lt;/p></description><content>&lt;p>Almost four years ago (agh!) I published &lt;a href="/posts/whats-in-my-lab/">What&amp;rsquo;s In My Lab&lt;/a>, an overview of the systems and software I use at home for my own personal infrastructure. You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated. Hah! Guess again.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Buffer Overflow</title><link>/</link><description>Recent content on Buffer Overflow</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>NVIDIA Container Toolkit with Docker CDI</title><link>/notes/linux/docker/nvidia_ctk_docker_cdi/</link><pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate><guid>/notes/linux/docker/nvidia_ctk_docker_cdi/</guid><description>&lt;p>I recently spent an hour (or three) troubleshooting hardware transcoding on my media server. At some point, an update to the NVIDIA Container Toolkit resulted in CUDA libraries not getting passed through correctly to my containerized Plex installation.&lt;/p>
+&lt;p>This error appeared in the &lt;code>Plex Media Server.log&lt;/code> file every time I attempted to play a file that needed transcoding:&lt;/p>
+&lt;pre tabindex="0">&lt;code>Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Cannot load libcuda.so.1
+Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Could not dynamically load CUDA
+&lt;/code>&lt;/pre>&lt;p>Running &lt;code>nvidia-smi&lt;/code> inside the container also presented the following error:&lt;/p></description><content>&lt;p>I recently spent an hour (or three) troubleshooting hardware transcoding on my media server. At some point, an update to the NVIDIA Container Toolkit resulted in CUDA libraries not getting passed through correctly to my containerized Plex installation.&lt;/p>
+&lt;p>This error appeared in the &lt;code>Plex Media Server.log&lt;/code> file every time I attempted to play a file that needed transcoding:&lt;/p>
+&lt;pre tabindex="0">&lt;code>Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Cannot load libcuda.so.1
+Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Could not dynamically load CUDA
+&lt;/code>&lt;/pre>&lt;p>Running &lt;code>nvidia-smi&lt;/code> inside the container also presented the following error:&lt;/p>
+&lt;pre tabindex="0">&lt;code>NVIDIA-SMI couldn&amp;#39;t find libnvidia-ml.so library in your system. Please make sure that the NVIDIA Display Driver is properly installed and present in your system.
+Please also try adding directory that contains libnvidia-ml.so to your system PATH.
+&lt;/code>&lt;/pre>&lt;p>Checking the library directory &lt;code>/usr/lib/x86_64-linux-gnu/&lt;/code> in the container revealed the missing piece:&lt;/p>
+&lt;pre tabindex="0">&lt;code>libcuda.so -&amp;gt; libcuda.so.1 (MISSING)
+libcuda.so.535.183.01
+libnvcuvid.so.535.183.01
+libnvidia-allocator.so.535.183.01
+libnvidia-cfg.so.535.183.01
+libnvidia-eglcore.so.535.183.01
+libnvidia-egl-gbm.so.1.1.0
+libnvidia-egl-wayland.so.1.1.10
+libnvidia-glcore.so.535.183.01
+libnvidia-glsi.so.535.183.01
+libnvidia-glvkspirv.so.535.183.01
+libnvidia-ml.so.535.183.01
+libnvidia-pkcs11-openssl3.so.535.183.01
+libnvidia-ptxjitcompiler.so.535.183.01
+libnvidia-rtcore.so.535.183.01
+libnvidia-tls.so.535.183.01
+&lt;/code>&lt;/pre>&lt;p>Note the absence of default libraries - in this case, components like &lt;code>libnvidia-ml.so.565.57.01&lt;/code> which should have a symlink called &lt;code>libnvidia-ml.so&lt;/code> which makes it the default version. This also explains the error above for &lt;code>libcuda.so.1&lt;/code>, which should have been reachable via &lt;code>libcuda.so&lt;/code> if the link weren&amp;rsquo;t missing.&lt;/p>
+&lt;p>I saw that the &lt;code>nvidia-container-toolkit&lt;/code> had undergone quite a few updates since I first set it all up, so I tried updating the NVIDIA drivers on my system from &lt;strong>535.183.01&lt;/strong> to &lt;strong>565.57.01&lt;/strong> to see if installing newer drivers somehow forced the CTK to relink everything. That didn&amp;rsquo;t help, and instead resulted in more libraries for the new version that still weren&amp;rsquo;t linking to defaults.&lt;/p>
+&lt;p>I manually ran the &lt;code>ldconfig&lt;/code> linker inside the container and observed that it correctly generated the symlinks. Plex could now see the CUDA library and &lt;code>nvidia-smi&lt;/code> could report the GPU, but this was only a temporary fix and wouldn&amp;rsquo;t survive a container rebuild.&lt;/p>
+&lt;p>Research led me to a &lt;a href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/128">GitHub issue on the &lt;code>nvidia-container-toolkit&lt;/code> project&lt;/a> related to &lt;a href="https://github.com/NVIDIA/nvidia-container-toolkit/blob/main/cmd/nvidia-ctk/README.md">CDI (container device interface) functionality&lt;/a>. CDI support seems to be a relatively new feature of the CTK which manages presenting the correct driver libraries through the container runtime. I didn&amp;rsquo;t have any CDI configurations present on my system, so I followed the docs to generate one.&lt;/p>
+&lt;pre tabindex="0">&lt;code>nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+nvidia-ctk runtime configure --runtime=docker --cdi.enabled
+systemctl restart docker
+&lt;/code>&lt;/pre>&lt;p>I also had to the add the device &lt;code>nvidia.com/gpu=all&lt;/code> to the Plex service in my &lt;code>docker-compose.yaml&lt;/code> file so the NVIDIA container runtime knows to use the CDI configuration.&lt;/p>
+&lt;pre tabindex="0">&lt;code> plex:
+image: ghcr.io/linuxserver/plex
+runtime: nvidia
+environment:
+- NVIDIA_VISIBLE_DEVICES=all
+devices:
+- nvidia.com/gpu=all
+&lt;/code>&lt;/pre>&lt;p>Once I rebuilt the Plex container with the CDI configuration, all of the NVIDIA libraries in the container were correctly linked with default &lt;code>.so.&lt;/code> versions and hardware transcoding worked as expected.&lt;/p></content></item><item><title>What's In My Lab Now, 2024 Edition</title><link>/posts/whats-in-my-lab-now-2024/</link><pubDate>Wed, 03 Apr 2024 00:00:00 +0000</pubDate><guid>/posts/whats-in-my-lab-now-2024/</guid><description>&lt;p>Almost four years ago (agh!) I published &lt;a href="/posts/whats-in-my-lab/">What&amp;rsquo;s In My Lab&lt;/a>, an overview of the systems and software I use at home for my own personal infrastructure. You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated. Hah! Guess again.&lt;/p></description><content>&lt;p>Almost four years ago (agh!) I published &lt;a href="/posts/whats-in-my-lab/">What&amp;rsquo;s In My Lab&lt;/a>, an overview of the systems and software I use at home for my own personal infrastructure. You might think that at a certain point you achieve some kind of serenity, and the desire to modify or expand is sated. Hah! Guess again.&lt;/p>
 &lt;h3 id="hardware">Hardware&lt;/h3>
 &lt;p>I&amp;rsquo;ve continued with the trend of using low-power off-the-shelf systems. The beauty of a product line like Dell&amp;rsquo;s OptiPlex Micro is that the design is essentially unchanging from one generation to the next. Where I used to have a range of models - 7040, 5050, etc. - I&amp;rsquo;ve slowly upgraded them all to the same generation of 3060s. One extra feature I&amp;rsquo;ve added that you won&amp;rsquo;t find on a stock OptiPlex Micro is a &lt;a href="https://www.dfrobot.com/product-2318.html">secondary NIC from DFRobot&lt;/a> connected to the WiFi M.2 slot, giving each Micro an extra 1GbE port for redundancy or a dedicated storage network.&lt;/p>
 &lt;p>There are only so many hard drives you can cram into an OptiPlex Micro - one, to be exact, of the 2.5&amp;quot; variety - so my storage needs are still served by a 2U SuperMicro rackmount server sporting 12 3.5&amp;quot; SAS drives split across two ZFS pools.&lt;/p>
@@ -391,50 +434,7 @@ System Benchmarks Index Score 730.7
 &lt;figcaption class="center" >The lone LPDDR4 package on the Raspberry Pi 4B.&lt;br/>Photo by &lt;a href="https://flic.kr/p/2jmZJMn">Jeff Geerling&lt;/a>, licensed under &lt;a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0&lt;/a>&lt;/figcaption>
 &lt;/figure>
 &lt;p>Other factors like File I/O do show significant improvements from the Pi 4, but that seems to be due solely to the Pi 4&amp;rsquo;s microSD card rather than some exceptional storage technology within the Oracle Cloud. Keep in mind that 55MiB/s and 2-3k IOPS is lacking compared to even the lowest consumer-grade SATA 6Gb/s SSDs. It is noteworthy nonetheless that Oracle is able to provide this level of performance in a free cloud server. I fully expect that the Pi 4 would win in this category with a USB3 flash drive or SSD.&lt;/p>
-&lt;p>All that being said, I went into this experiment fully expecting to see performance of the free Ampere VM roughly on-par with the Pi 4, at best. My suspicions were based on the anemic performance of other cloud providers&amp;rsquo; free tier compute instances - AWS&amp;rsquo;s t2.micro, Azure&amp;rsquo;s B1s burstable, and even Oracle&amp;rsquo;s existing AMD Epyc &amp;ldquo;micro&amp;rdquo; shape. The Ampere VMs in Oracle&amp;rsquo;s free tier are surprisingly capable and unlike any other free offering I&amp;rsquo;ve seen to date.&lt;/p></content></item><item><title>NVIDIA Container Toolkit with Docker CDI</title><link>/notes/linux/docker/nvidia_ctk_docker_cdi/</link><pubDate>Fri, 31 Dec 2021 00:00:00 +0000</pubDate><guid>/notes/linux/docker/nvidia_ctk_docker_cdi/</guid><description>&lt;p>I recently spent an hour (or three) troubleshooting hardware transcoding on my media server. At some point, an update to the NVIDIA Container Toolkit resulted in CUDA libraries not getting passed through correctly to my containerized Plex installation.&lt;/p>
-&lt;p>This error appeared in the &lt;code>Plex Media Server.log&lt;/code> file every time I attempted to play a file that needed transcoding:&lt;/p>
-&lt;pre tabindex="0">&lt;code>Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Cannot load libcuda.so.1
-Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Could not dynamically load CUDA
-&lt;/code>&lt;/pre>&lt;p>Running &lt;code>nvidia-smi&lt;/code> inside the container also presented the following error:&lt;/p></description><content>&lt;p>I recently spent an hour (or three) troubleshooting hardware transcoding on my media server. At some point, an update to the NVIDIA Container Toolkit resulted in CUDA libraries not getting passed through correctly to my containerized Plex installation.&lt;/p>
-&lt;p>This error appeared in the &lt;code>Plex Media Server.log&lt;/code> file every time I attempted to play a file that needed transcoding:&lt;/p>
-&lt;pre tabindex="0">&lt;code>Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Cannot load libcuda.so.1
-Dec 15, 2024 03:45:14.374 [140307690093368] ERROR - [Req#105/Transcode] [FFMPEG] - Could not dynamically load CUDA
-&lt;/code>&lt;/pre>&lt;p>Running &lt;code>nvidia-smi&lt;/code> inside the container also presented the following error:&lt;/p>
-&lt;pre tabindex="0">&lt;code>NVIDIA-SMI couldn&amp;#39;t find libnvidia-ml.so library in your system. Please make sure that the NVIDIA Display Driver is properly installed and present in your system.
-Please also try adding directory that contains libnvidia-ml.so to your system PATH.
-&lt;/code>&lt;/pre>&lt;p>Checking the library directory &lt;code>/usr/lib/x86_64-linux-gnu/&lt;/code> in the container revealed the missing piece:&lt;/p>
-&lt;pre tabindex="0">&lt;code>libcuda.so -&amp;gt; libcuda.so.1 (MISSING)
-libcuda.so.535.183.01
-libnvcuvid.so.535.183.01
-libnvidia-allocator.so.535.183.01
-libnvidia-cfg.so.535.183.01
-libnvidia-eglcore.so.535.183.01
-libnvidia-egl-gbm.so.1.1.0
-libnvidia-egl-wayland.so.1.1.10
-libnvidia-glcore.so.535.183.01
-libnvidia-glsi.so.535.183.01
-libnvidia-glvkspirv.so.535.183.01
-libnvidia-ml.so.535.183.01
-libnvidia-pkcs11-openssl3.so.535.183.01
-libnvidia-ptxjitcompiler.so.535.183.01
-libnvidia-rtcore.so.535.183.01
-libnvidia-tls.so.535.183.01
-&lt;/code>&lt;/pre>&lt;p>Note the absence of default libraries - in this case, components like &lt;code>libnvidia-ml.so.565.57.01&lt;/code> which should have a symlink called &lt;code>libnvidia-ml.so&lt;/code> which makes it the default version. This also explains the error above for &lt;code>libcuda.so.1&lt;/code>, which should have been reachable via &lt;code>libcuda.so&lt;/code> if the link weren&amp;rsquo;t missing.&lt;/p>
-&lt;p>I saw that the &lt;code>nvidia-container-toolkit&lt;/code> had undergone quite a few updates since I first set it all up, so I tried updating the NVIDIA drivers on my system from &lt;strong>535.183.01&lt;/strong> to &lt;strong>565.57.01&lt;/strong> to see if installing newer drivers somehow forced the CTK to relink everything. That didn&amp;rsquo;t help, and instead resulted in more libraries for the new version that still weren&amp;rsquo;t linking to defaults.&lt;/p>
-&lt;p>I manually ran the &lt;code>ldconfig&lt;/code> linker inside the container and observed that it correctly generated the symlinks. Plex could now see the CUDA library and &lt;code>nvidia-smi&lt;/code> could report the GPU, but this was only a temporary fix and wouldn&amp;rsquo;t survive a container rebuild.&lt;/p>
-&lt;p>Research led me to a &lt;a href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/128">GitHub issue on the &lt;code>nvidia-container-toolkit&lt;/code> project&lt;/a> related to &lt;a href="https://github.com/NVIDIA/nvidia-container-toolkit/blob/main/cmd/nvidia-ctk/README.md">CDI (container device interface) functionality&lt;/a>. CDI support seems to be a relatively new feature of the CTK which manages presenting the correct driver libraries through the container runtime. I didn&amp;rsquo;t have any CDI configurations present on my system, so I followed the docs to generate one.&lt;/p>
-&lt;pre tabindex="0">&lt;code>nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
-nvidia-ctk runtime configure --runtime=docker --cdi.enabled
-systemctl restart docker
-&lt;/code>&lt;/pre>&lt;p>I also had to the add the device &lt;code>nvidia.com/gpu=all&lt;/code> to the Plex service in my &lt;code>docker-compose.yaml&lt;/code> file so the NVIDIA container runtime knows to use the CDI configuration.&lt;/p>
-&lt;pre tabindex="0">&lt;code> plex:
-image: ghcr.io/linuxserver/plex
-runtime: nvidia
-environment:
-- NVIDIA_VISIBLE_DEVICES=all
-devices:
-- nvidia.com/gpu=all
-&lt;/code>&lt;/pre>&lt;p>Once I rebuilt the Plex container with the CDI configuration, all of the NVIDIA libraries in the container were correctly linked with default &lt;code>.so.&lt;/code> versions and hardware transcoding worked as expected.&lt;/p></content></item><item><title>Implementing a Private CA for the Home Lab</title><link>/posts/implementing-a-private-ca-for-home-use/</link><pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate><guid>/posts/implementing-a-private-ca-for-home-use/</guid><description>&lt;p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.&lt;/p>
+&lt;p>All that being said, I went into this experiment fully expecting to see performance of the free Ampere VM roughly on-par with the Pi 4, at best. My suspicions were based on the anemic performance of other cloud providers&amp;rsquo; free tier compute instances - AWS&amp;rsquo;s t2.micro, Azure&amp;rsquo;s B1s burstable, and even Oracle&amp;rsquo;s existing AMD Epyc &amp;ldquo;micro&amp;rdquo; shape. The Ampere VMs in Oracle&amp;rsquo;s free tier are surprisingly capable and unlike any other free offering I&amp;rsquo;ve seen to date.&lt;/p></content></item><item><title>Implementing a Private CA for the Home Lab</title><link>/posts/implementing-a-private-ca-for-home-use/</link><pubDate>Sun, 31 Oct 2021 00:00:00 +0000</pubDate><guid>/posts/implementing-a-private-ca-for-home-use/</guid><description>&lt;p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.&lt;/p>
 &lt;p>As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic. This of course allows for a variety of attack methods against locally-hosted services.&lt;/p></description><content>&lt;p>The low risk and low-to-no budget of a home lab environment often results in security taking a back seat. Services are sometimes left open and unguarded in the name of &amp;ldquo;Just Make It Work&amp;rdquo;. Home labs aside, the complexity of running even a halfway-decent security infrastructure makes doing so a non-starter even in many small business environments.&lt;/p>
 &lt;p>As a result, the largest and most easily exploitable gap you&amp;rsquo;re bound to find in many home labs and small networks is unencrypted traffic. This of course allows for a variety of attack methods against locally-hosted services.&lt;/p>
 &lt;figure class="center" >
