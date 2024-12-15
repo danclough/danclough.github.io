@@ -1,6 +1,6 @@
 +++
 title = "NVIDIA Container Toolkit with Docker CDI"
-date = 2021-12-31
+date = 2024-12-14
 +++
 I recently spent an hour (or three) troubleshooting hardware transcoding on my media server.  At some point, an update to the NVIDIA Container Toolkit resulted in CUDA libraries not getting passed through correctly to my containerized Plex installation.
 
