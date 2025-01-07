@@ -61,3 +61,14 @@ I also had to the add the device `nvidia.com/gpu=all` to the Plex service in my 
 ```
 
 Once I rebuilt the Plex container with the CDI configuration, all of the NVIDIA libraries in the container were correctly linked with default `.so.` versions and hardware transcoding worked as expected.
+
+### Troubleshooting Missing Libraries
+Depending on when your drivers were last installed or updated, you may see an error about missing libraries when trying to start a container using the nvidia runtime.
+```
+Error response from daemon: failed to create task for container: 
+failed to create shim task: OCI runtime create failed: runc create failed: 
+unable to start container process: error during container init: 
+failed to fulfil mount request: open /usr/lib/x86_64-linux-gnu/libnvidia-egl-gbm.so.1.1.0: 
+no such file or directory: unknown
+```
+The file in question will be one of the libraries that's explicitly passed to the container by the CTK.  If the CDI config file references a library file that no longer exists after a driver update, the container will fail to start.  Regenerate the CDI configuration file using the `nvidia-ctk cdi generate` step above.
