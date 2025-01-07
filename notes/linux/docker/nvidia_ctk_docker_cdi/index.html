@@ -35,5 +35,10 @@ systemctl restart docker
       - NVIDIA_VISIBLE_DEVICES=all
     devices:
       - nvidia.com/gpu=all
-</code></pre><p>Once I rebuilt the Plex container with the CDI configuration, all of the NVIDIA libraries in the container were correctly linked with default <code>.so.</code> versions and hardware transcoding worked as expected.</p></div></div></article></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2024 Powered by <a href=https://gohugo.io>Hugo</a></span>
+</code></pre><p>Once I rebuilt the Plex container with the CDI configuration, all of the NVIDIA libraries in the container were correctly linked with default <code>.so.</code> versions and hardware transcoding worked as expected.</p><h3 id=troubleshooting-missing-libraries>Troubleshooting Missing Libraries<a href=#troubleshooting-missing-libraries class=hanchor arialabel=Anchor>#</a></h3><p>Depending on when your drivers were last installed or updated, you may see an error about missing libraries when trying to start a container using the nvidia runtime.</p><pre tabindex=0><code>Error response from daemon: failed to create task for container: 
+failed to create shim task: OCI runtime create failed: runc create failed: 
+unable to start container process: error during container init: 
+failed to fulfil mount request: open /usr/lib/x86_64-linux-gnu/libnvidia-egl-gbm.so.1.1.0: 
+no such file or directory: unknown
+</code></pre><p>The file in question will be one of the libraries that&rsquo;s explicitly passed to the container by the CTK. If the CDI config file references a library file that no longer exists after a driver update, the container will fail to start. Regenerate the CDI configuration file using the <code>nvidia-ctk cdi generate</code> step above.</p></div></div></article></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=https://gohugo.io>Hugo</a></span>
 <span>:: <a href=https://github.com/panr/hugo-theme-terminal target=_blank>Theme</a> made by <a href=https://github.com/panr target=_blank>panr</a></span></div></div></footer><script type=text/javascript src=/bundle.min.js></script></div></body></html>
