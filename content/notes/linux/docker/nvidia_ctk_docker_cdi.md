@@ -49,7 +49,7 @@ nvidia-ctk runtime configure --runtime=docker --cdi.enabled
 systemctl restart docker
 ```
 
-I also had to the add the device `nvidia.com/gpu=all` to the Plex service in my `docker-compose.yaml` file so the NVIDIA container runtime knows to use the CDI configuration.
+I also had to add the device `nvidia.com/gpu=all` to the Plex service in my `docker-compose.yaml` file so the NVIDIA container runtime knows to use the CDI configuration.
 ```
   plex:
     image: ghcr.io/linuxserver/plex
