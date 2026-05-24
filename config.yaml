@@ -1,8 +1,6 @@
-languageCode: "en-us"
 baseUrl: "/"
 theme: "terminal"
 paginate: 5
-googleAnalytics: "UA-23906734-2"
 
 params:
 #  author: "Dan Clough"
@@ -17,7 +15,8 @@ params:
 
 languages:
   en:
-    languageName: "English"
+    locale: "en-us"
+    label: "English"
     title: "Buffer Overflow"
     params:
       subtitle: "A blog for my tech experiments and experiences"
